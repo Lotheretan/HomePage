@@ -2,30 +2,34 @@
 namespace controllers;
  use micro\orm\DAO;
 use models\Utilisateur;
+use Ajax\JsUtils;
+use micro\utils\RequestUtils;
 
  /**
  * Controller UtilisateurController
+ * * @property JsUtils $jquery
  **/
 class UtilisateurController extends ControllerBase{
 
-	public function index(){
-		$semantic=$this->jquery->semantic();
-		$semantic->htmlHeader("header",1,"Listes des Utilisateurs");
-		$bts=$semantic->htmlButtonGroups("Buttons",["Liste des Utilisateur","Ajouter un utilisateur..."]);
-		$bts->setPropertyValues("data-ajax", ["all/","addUser/"]);
-		$bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
-		$this->jquery->compile($this->view);
-		$this->loadView("Utilisateur/index.html");
-	}
+    /**
+     * @route("/Utilisateur")
+     */
+    public function index(){
+        $semantic=$this->jquery->semantic();
+        $bts=$semantic->htmlButtonGroups("buttons",["Liste des utilisateurs","Ajouter un utilisateur..."]);
+        $bts->setPropertyValues("data-ajax", ["all/","addUser/"]);
+        $bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
+        $this->jquery->compile($this->view);
+        $this->loadView("Utilisateur/index.html");   
+    }
 	
 	/**
-	 * @route ("/all/.*?","cache"=>true,"duration"=>15)
+	* @route("/all","cache"=>true,"duration"=>15)
 	 */
 	public function all(){
 		$user=DAO::getAll("models\Utilisateur");
-		//var_dump($user);
 		$semantic=$this->jquery->semantic();
-		$table=$semantic->dataTable("tblUsers", "models\Utilisateur", $user);
+		$table=$semantic->dataTable("utilisateur", "models\Utilisateur", $user);
 		$table->setFields(["id","login","statut","site"]);
 		$table->setCaptions(["Identifiant", "Login","Statut","Site"]);
 		$table->addButtonInToolbar("Ajouter un utilisateur");

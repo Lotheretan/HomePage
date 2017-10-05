@@ -7,6 +7,7 @@ class Main extends ControllerBase{
 
 	public function index(){
 		$semantic=$this->jquery->semantic();
+
 		$semantic->htmlHeader("header",1,"Accueil du site");
 		$bt=$semantic->htmlButton("btLogin","Se connecter");
 		$bt2=$semantic->htmlButton("btUser","Liste User");

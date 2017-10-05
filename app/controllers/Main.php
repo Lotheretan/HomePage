@@ -7,9 +7,11 @@ class Main extends ControllerBase{
 
 	public function index(){
 		$semantic=$this->jquery->semantic();
-		$semantic->htmlHeader("header",1,"Micro framework");
-		$bt=$semantic->htmlButton("btTest","Semantic-UI Button");
+		$semantic->htmlHeader("header",1,"Accueil du site");
+		$bt=$semantic->htmlButton("btLogin","Se connecter");
+		$bt2=$semantic->htmlButton("btUser","Liste User");
 		$bt->onClick("$('#test').html('It works with Semantic-UI too !');");
+		
 		$this->jquery->compile($this->view);
 		$this->loadView("index.html");}
 

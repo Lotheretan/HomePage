@@ -36,5 +36,8 @@ class Statut{
 	 public function setUtilisateurs($utilisateurs){
 		$this->utilisateurs=$utilisateurs;
 	}
+	public function __toString(){
+		return $this->libelle;
+	}
 
 }

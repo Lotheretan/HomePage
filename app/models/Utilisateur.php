@@ -127,5 +127,8 @@ class Utilisateur{
 	 public function setMoteurs($moteurs){
 		$this->moteurs=$moteurs;
 	}
+	public function __toString(){
+		return $this->statut;
+	}
 
 }

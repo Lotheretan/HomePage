@@ -12,6 +12,7 @@ class Main extends ControllerBase{
 		$bt=$semantic->htmlButton("btLogin","Se connecter");
 		$bt2=$semantic->htmlButton("btUser","Liste User");
 		$bt->onClick("$('#test').html('It works with Semantic-UI too !');");
+		//$bt2->onClick();
 		
 		$this->jquery->compile($this->view);
 		$this->loadView("index.html");}

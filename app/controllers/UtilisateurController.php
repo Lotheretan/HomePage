@@ -26,7 +26,7 @@ class UtilisateurController extends ControllerBase{
 		//var_dump($user);
 		$semantic=$this->jquery->semantic();
 		$table=$semantic->dataTable("tblUsers", "models\Utilisateur", $user);
-		$table->setFields(["id","login","idStatut","idSite"]);
+		$table->setFields(["id","login","statut","site"]);
 		$table->setCaptions(["Identifiant", "Login","Statut","Site"]);
 		$table->addButtonInToolbar("Ajouter un utilisateur");
 		$table->addEditDeleteButtons();

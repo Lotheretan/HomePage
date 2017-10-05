@@ -145,5 +145,8 @@ class Site{
 	 public function setUtilisateurs($utilisateurs){
 		$this->utilisateurs=$utilisateurs;
 	}
+	public function __toString(){
+		return $this->nom;
+	}
 
 }

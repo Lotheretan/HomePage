@@ -7,7 +7,7 @@ use micro\utils\RequestUtils;
 
  /**
  * Controller UtilisateurController
- * * @property JsUtils $jquery
+ * @property JsUtils $jquery
  **/
 class UtilisateurController extends ControllerBase{
 
@@ -32,24 +32,28 @@ class UtilisateurController extends ControllerBase{
 		$table=$semantic->dataTable("utilisateur", "models\Utilisateur", $user);
 		$table->setFields(["id","login","statut","site"]);
 		$table->setCaptions(["Identifiant", "Login","Statut","Site"]);
-		$table->addButtonInToolbar("Ajouter un utilisateur");
 		$table->addEditDeleteButtons();
 		echo $table->compile($this->jquery);
 		echo $this->jquery->compile();
 	
 	}
-	/*public function addUser(){
+	
+	/**
+	 * @route("addUser/")
+	 */
+	public function addUser(){
 		$semantic=$this->jquery->semantic();
 		$user=new Utilisateur();
-		$form=$semantic->dataForm("frmUser", $user);
-		$form->setFields("login","password\n","firstname","lastname\n","email","id");
+		$form=$semantic->dataForm("utilisateur", $user);
+		$form->setFields("login","password\n","firstname","lastname\n","fondEcran","couleur/n","status","site","id");
 		$form->fieldAsInput(1,["inputType"=>"password"]);
 		$form->fieldAsHidden("id");
-		$form->setCaptions("Login","Mot de passe","Prénom","Nom","Email","Validez");
-		$form->addSubmit("btsubmit", "Validez","green","newUser/","#divUsers");
+		$form->setCaptions("Login","Mot de passe","Prénom","Nom","Fond d'\écran","Couleur","Status","Site","Valider");
+		$form->addSubmit("btsubmit", "Valider","green","newUser/","#divUsers");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
 	
-	}*/
+	}
+	
 
 }

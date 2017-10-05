@@ -22,5 +22,8 @@ return array(
   'controllers\\UtilisateurController::all' => array(
     array('#name' => 'route', '#type' => 'micro\\annotations\\router\\RouteAnnotation', "/all","cache"=>true,"duration"=>15)
   ),
+  'controllers\\UtilisateurController::addUser' => array(
+    array('#name' => 'route', '#type' => 'micro\\annotations\\router\\RouteAnnotation', "addUser/")
+  ),
 );
 

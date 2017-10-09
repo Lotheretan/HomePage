@@ -2,6 +2,7 @@
 namespace controllers;
  use micro\orm\DAO;
 use Ajax\JsUtils;
+use micro\utils\RequestUtils;
 
  /**
  * Controller SiteController
@@ -21,18 +22,37 @@ class SiteController extends ControllerBase{
 		$table->setCaptions(["Identifiant", "Nom","Latitude","Longitude"]);
 		$table->addEditButton();
 		$table->addDeleteButton();
-		$table->setUrls(["","SiteController/UpdateSite","SiteController/DeleteSite"]);
+		$table->setUrls(["","SiteController/editSite","SiteController/DeleteSite"]);
 		$table->setTargetSelector("#site");
 		echo $table->compile($this->jquery);
 		echo $this->jquery->compile();
 	}
-	public function UpdateSite(){
+	public function editSite($id){
 		$semantic=$this->jquery->semantic();
 		$this->jquery->compile($this->view);
-		$this->loadView("site/Update.html");
-	}
-	public function DeleteSite(){
+		$site=DAO::getOne("models\Site", $id);
+		$form=$semantic->dataForm("frmSite", $site);
+		$form->setFields(["nom","latitude","longitude","submit"]);
+		$form->setCaptions(["Nom","Latitude","Longitude","Update"]);
+		$form->FieldAsSubmit("submit","green","SiteController/UpdateSite/".$id,"#site");
+		echo $form->compile($this->jquery);
+		echo $this->jquery->compile();
 		
+		
+	}
+	public function UpdateSite($id){
+		$site=DAO::getOne("models\Site", $id);
+		RequestUtils::setValuesToObject($site,$_POST);
+		if(DAO::update($site)){
+			echo $site->getNom()." modifié";
+		}
+		
+	}
+	public function DeleteSite($id){
+		$site=DAO::getOne("models\Site", $id);
+		if(DAO::remove($site)){
+			echo $site->getNom()." supprimé";
+		}
 	}
 
 }

@@ -25,5 +25,8 @@ return array(
   'controllers\\UtilisateurController::addUser' => array(
     array('#name' => 'route', '#type' => 'micro\\annotations\\router\\RouteAnnotation', "addUser/")
   ),
+  'controllers\\UtilisateurController::newUser' => array(
+    array('#name' => 'route', '#type' => 'micro\\annotations\\router\\RouteAnnotation', "newUser/.*?")
+  ),
 );
 

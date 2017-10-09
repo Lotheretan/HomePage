@@ -45,15 +45,26 @@ class UtilisateurController extends ControllerBase{
 		$semantic=$this->jquery->semantic();
 		$user=new Utilisateur();
 		$form=$semantic->dataForm("utilisateur", $user);
-		$form->setFields("login","password\n","firstname","lastname\n","fondEcran","couleur/n","status","site","id");
+		$form->setFields(["login","password\n","firstname","lastname\n","fondEcran","couleur\n","status","site","id\n","submit"]);
 		$form->fieldAsInput(1,["inputType"=>"password"]);
-		$form->fieldAsHidden("id");
-		$form->setCaptions("Login","Mot de passe","Prénom","Nom","Fond d'\écran","Couleur","Status","Site","Valider");
-		$form->addSubmit("btsubmit", "Valider","green","newUser/","#divUsers");
+		$form->fieldAsHidden("id\n");
+		$form->setCaptions(["Login","Mot de passe","Prénom","Nom","Fond d'écran","Couleur","Status","Site","","Valider"]);
+		$form->FieldAsSubmit("submit","green","newUser/","#divUsers");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
 	
 	}
-	
-
+	/**
+	 * @route("newUser/.*?")
+	 */
+	public function newUser(){
+	    $user=new Utilisateur();
+	    RequestUtils::setValuesToObject($user,$_POST);
+	    $role=DAO::getOne("models\Utilisateur", 2);
+	    $user->setRole($role);
+	    if(DAO::insert($utilisateur)){
+	        echo $user->getFirstname()." ajouté";
+	    }
+	    
+	}
 }

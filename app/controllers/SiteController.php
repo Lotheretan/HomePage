@@ -3,6 +3,7 @@ namespace controllers;
  use micro\orm\DAO;
 use Ajax\JsUtils;
 use micro\utils\RequestUtils;
+use models\Site;
 
  /**
  * Controller SiteController
@@ -17,7 +18,9 @@ class SiteController extends ControllerBase{
 		$this->loadView("site/index.html");
 		$site=DAO::getAll("models\Site");
 		$semantic=$this->jquery->semantic();
+		$bt=$semantic->htmlButton("Btadd","blue");
 		$table=$semantic->dataTable("site", "models\Site", $site);
+		$table->setIdentifierFunction(function($i,$o){return $o->getId();});
 		$table->setFields(["id","nom","latitude","longitude"]);
 		$table->setCaptions(["Identifiant", "Nom","Latitude","Longitude"]);
 		$table->addEditButton();
@@ -25,6 +28,17 @@ class SiteController extends ControllerBase{
 		$table->setUrls(["","SiteController/editSite","SiteController/DeleteSite"]);
 		$table->setTargetSelector("#site");
 		echo $table->compile($this->jquery);
+		echo $this->jquery->compile();
+	}
+	public function addSite(){
+		$semantic=$this->jquery->semantic();
+		$this->jquery->compile($this->view);
+		$site=new Site();
+		$form=$semantic->dataForm("frm1site", $site);
+		$form->setFields(["nom","longitude","latitude","ecart","fondEcran","couleur","ordre","option","submit"]);
+		$form->setCaptions(["Nom","Longitude","Latitude","Ecart","Fond d'écran","Couleur","Ordre","Option","Valider"]);
+		$form->FieldAsSubmit("submit","green","SiteController/AjoutSite","#site");
+		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
 	}
 	public function editSite($id){
@@ -39,6 +53,13 @@ class SiteController extends ControllerBase{
 		echo $this->jquery->compile();
 		
 		
+	}
+	public function AjoutSite(){
+		$site=new Site();
+		RequestUtils::setValuesToObject($site,$_POST);
+		if(DAO::insert($site)){
+			echo $site->getNom()." ajouté";
+		}
 	}
 	public function UpdateSite($id){
 		$site=DAO::getOne("models\Site", $id);

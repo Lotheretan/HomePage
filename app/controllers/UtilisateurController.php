@@ -3,6 +3,7 @@ namespace controllers;
  use micro\orm\DAO;
 use models\Utilisateur;
 use Ajax\JsUtils;
+use Ajax\semantic\html\collections\form\HtmlFormDropdown;
 use micro\utils\RequestUtils;
 
  /**
@@ -45,10 +46,11 @@ class UtilisateurController extends ControllerBase{
 		$semantic=$this->jquery->semantic();
 		$user=new Utilisateur();
 		$form=$semantic->dataForm("utilisateur", $user);
-		$form->setFields(["login","password\n","firstname","lastname\n","fondEcran","couleur\n","status","site","id\n","submit"]);
+		$form->setFields(["login","password\n","fondEcran","couleur\n","site","statut","submit"]);
 		$form->fieldAsInput(1,["inputType"=>"password"]);
-		$form->fieldAsHidden("id\n");
-		$form->setCaptions(["Login","Mot de passe","Prénom","Nom","Fond d'écran","Couleur","Status","Site","","Valider"]);
+		$form->setCaptions(["Login","Mot de Passe","Fond d'écran","Couleur","Site","Status","Valider"]);
+		//$form->addItem(new HtmlFormDropdown("ddSite",array("Ifs","Caen"),"Site"));
+		$form->fieldAsDropDown("site",["1"=>"Ifs","2"=>"Caen"]);
 		$form->FieldAsSubmit("submit","green","newUser/","#divUsers");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
@@ -60,10 +62,8 @@ class UtilisateurController extends ControllerBase{
 	public function newUser(){
 	    $user=new Utilisateur();
 	    RequestUtils::setValuesToObject($user,$_POST);
-	    $role=DAO::getOne("models\Utilisateur", 2);
-	    $user->setRole($role);
-	    if(DAO::insert($utilisateur)){
-	        echo $user->getFirstname()." ajouté";
+	    if(DAO::insert($user)){
+	        echo $user->getLogin()." ajouté";
 	    }
 	    
 	}

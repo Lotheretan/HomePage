@@ -17,6 +17,8 @@ class UtilisateurController extends ControllerBase{
      */
     public function index(){
         $semantic=$this->jquery->semantic();
+        $bt0=$semantic->htmlButton("btAccueil","Accueil");
+        $bt0->asLink("Main");
         $bts=$semantic->htmlButtonGroups("buttons",["Liste des utilisateurs","Ajouter un utilisateur..."]);
         $bts->setPropertyValues("data-ajax", ["all/","addUser/"]);
         $bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);

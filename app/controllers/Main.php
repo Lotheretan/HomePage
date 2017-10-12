@@ -1,18 +1,19 @@
 <?php
 namespace controllers;
+use Ajax\JsUtils;
  /**
  * Controller Main
+ *@property JsUtils $jquery
  **/
 class Main extends ControllerBase{
 
 	public function index(){
 		$semantic=$this->jquery->semantic();
-
 		$semantic->htmlHeader("header",1,"Accueil du site");
-		$bt=$semantic->htmlButton("btLogin","Se connecter");
-		$bt2=$semantic->htmlButton("btUser","Liste User");
-		$bt->onClick("$('#test').html('It works with Semantic-UI too !');");
-		$bt2->onClick();
+		$bt=$semantic->htmlButton("bt","Utilisateur");
+		$bt->asLink("UtilisateurController");
+		$bt2=$semantic->htmlButton("bt2","Sites");
+		$bt2->asLink("SiteController");
 		
 		$this->jquery->compile($this->view);
 		$this->loadView("index.html");}

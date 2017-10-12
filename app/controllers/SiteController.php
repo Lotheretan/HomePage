@@ -14,7 +14,8 @@ class SiteController extends ControllerBase{
 	public function index(){
 		$semantic=$this->jquery->semantic();
 		$semantic->htmlHeader("header",1,"Liste des sites");
-
+		$bt0=$semantic->htmlButton("btAccueil","Accueil");
+		$bt0->asLink("Main");
 		$bt=$semantic->htmlButton("Bt","Afficher liste");
 		//$bt->onClick($this->addSite());
 		$bt->getOnClick("SiteController/all/","#mainSite");

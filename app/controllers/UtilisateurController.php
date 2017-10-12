@@ -5,6 +5,7 @@ use models\Utilisateur;
 use Ajax\JsUtils;
 use Ajax\semantic\html\collections\form\HtmlFormDropdown;
 use micro\utils\RequestUtils;
+use Ajax\service\JArray;
 
  /**
  * Controller UtilisateurController
@@ -47,13 +48,16 @@ class UtilisateurController extends ControllerBase{
 	public function addUser(){
 		$semantic=$this->jquery->semantic();
 		$user=new Utilisateur();
+		$sites=DAO::getAll("models\Site");
+		$statuts=DAO::getAll("models\Statut");
 		$form=$semantic->dataForm("utilisateur", $user);
-		$form->setFields(["login","password\n","fondEcran","couleur\n","site","statut","submit"]);
+		$form->setFields(["login","password\n","fondEcran","couleur\n","site","statut\n","submit","clear"]);
 		$form->fieldAsInput(1,["inputType"=>"password"]);
-		$form->setCaptions(["Login","Mot de Passe","Fond d'écran","Couleur","Site","Status","Valider"]);
-		//$form->addItem(new HtmlFormDropdown("ddSite",array("Ifs","Caen"),"Site"));
-		$form->fieldAsDropDown("site",["1"=>"Ifs","2"=>"Caen"]);
+		$form->setCaptions(["Login","Mot de Passe","Fond d'écran","Couleur","Site","Status","Valider","Reset"]);
+		$form->fieldAsDropDown("site",JArray::modelArray($sites,"getId","getNom"));
+		$form->fieldAsDropDown("statut\n",JArray::modelArray($statuts,"getId","getLibelle"));
 		$form->FieldAsSubmit("submit","green","newUser/","#divUsers");
+		$form->fieldAsReset("clear");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
 	

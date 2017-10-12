@@ -39,6 +39,7 @@ class Utilisateur{
 	 * @oneToMany("mappedBy"=>"utilisateur","className"=>"models\Moteur")
 	*/
 	private $moteurs;
+	
 
 	 public function getId(){
 		return $this->id;
@@ -128,7 +129,12 @@ class Utilisateur{
 		$this->moteurs=$moteurs;
 	}
 	public function __toString(){
-		return $this->statut;
+		$this->statut;
+		$this->site;		
+	}
+	public function __construct(){
+	    $this->site="";
+	    $this->statut="";
 	}
 
 }

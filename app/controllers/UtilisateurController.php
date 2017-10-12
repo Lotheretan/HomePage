@@ -6,6 +6,7 @@ use Ajax\JsUtils;
 use Ajax\semantic\html\collections\form\HtmlFormDropdown;
 use micro\utils\RequestUtils;
 use Ajax\service\JArray;
+use models\Moteur;
 
  /**
  * Controller UtilisateurController
@@ -68,6 +69,10 @@ class UtilisateurController extends ControllerBase{
 	public function newUser(){
 	    $user=new Utilisateur();
 	    RequestUtils::setValuesToObject($user,$_POST);
+	    $site=DAO::getOne("models\Site", $_POST["site"]);
+	    $statut=DAO::getOne("models\Statut", $_POST["statut"]);
+	    $user->setSite($site);
+	    $user->setStatut($statut);
 	    if(DAO::insert($user)){
 	        echo $user->getLogin()." ajouté";
 	    }

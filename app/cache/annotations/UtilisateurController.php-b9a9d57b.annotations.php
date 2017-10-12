@@ -7,6 +7,7 @@ return array(
   'Utilisateur' => 'models\\Utilisateur',
   'JsUtils' => 'Ajax\\JsUtils',
   'RequestUtils' => 'micro\\utils\\RequestUtils',
+  'JArray' => 'Ajax\\service\\JArray',
 ),
   '#traitMethodOverrides' => array (
   'controllers\\UtilisateurController' => 
@@ -27,6 +28,9 @@ return array(
   ),
   'controllers\\UtilisateurController::newUser' => array(
     array('#name' => 'route', '#type' => 'micro\\annotations\\router\\RouteAnnotation', "newUser/.*?")
+  ),
+  'controllers\\UtilisateurController::UpdateUser' => array(
+    array('#name' => 'route', '#type' => 'micro\\annotations\\router\\RouteAnnotation', "UpdateUser/.*?")
   ),
 );
 

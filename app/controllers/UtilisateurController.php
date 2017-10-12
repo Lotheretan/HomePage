@@ -3,10 +3,9 @@ namespace controllers;
  use micro\orm\DAO;
 use models\Utilisateur;
 use Ajax\JsUtils;
-use Ajax\semantic\html\collections\form\HtmlFormDropdown;
 use micro\utils\RequestUtils;
 use Ajax\service\JArray;
-use models\Moteur;
+
 
  /**
  * Controller UtilisateurController
@@ -35,9 +34,11 @@ class UtilisateurController extends ControllerBase{
 		$user=DAO::getAll("models\Utilisateur");
 		$semantic=$this->jquery->semantic();
 		$table=$semantic->dataTable("utilisateur", "models\Utilisateur", $user);
-		$table->setFields(["id","login","statut","site"]);
-		$table->setCaptions(["Identifiant", "Login","Statut","Site"]);
+		$table->setFields(["id","login","couleur","fondEcran","statut","site"]);
+		$table->setCaptions(["Identifiant", "Login","Couleur","Fond d'écran","Statut","Site"]);
 		$table->addEditDeleteButtons();
+		$table->setUrls("","UtilisateurController/editUser","UtilisateurController/DeleteUser");
+		$table->setTargetSelector("#divUsers");
 		echo $table->compile($this->jquery);
 		echo $this->jquery->compile();
 	
@@ -77,5 +78,40 @@ class UtilisateurController extends ControllerBase{
 	        echo $user->getLogin()." ajouté";
 	    }
 	    
+	}
+	
+	public function editUser($id){
+	    $semantic=$this->jquery->semantic();
+	    $this->jquery->compile($this->view);
+	    $user=DAO::getOne("models\Utilisateur", $id);
+	    $form=$semantic->dataForm("utilisateur", $user);
+	    $form->setFields(["login","password\n","fondEcran","couleur\n","site","statut\n","submit"]);
+	    $form->setCaptions(["Login","Mot de Passe","Fond d'écran","Couleur","Site","Status","Update"]);
+	    $form->FieldAsSubmit("submit","green","UpdateUser/".$id,"#user");
+	    echo $form->compile($this->jquery);
+	    echo $this->jquery->compile();
+	}
+	
+	/**
+	 * @route("UpdateUser/.*?")
+	 */
+	public function UpdateUser($id){
+	    $user=DAO::getOne("models\Utilisateur", $id);
+	    $site=DAO::getOne("models\Site", $_POST["site"]);
+	    $statut=DAO::getOne("models\Statut", $_POST["statut"]);
+	    $user->setSite($site);
+	    $user->setStatut($statut);
+	    RequestUtils::setValuesToObject($user,$_POST);
+	    if(DAO::update($user)){
+	        echo $user->getLogin()." modifié";
+	    }
+	    
+	}
+	
+	public function DeleteUser($id){
+	    $user=DAO::getOne("models\Utilisateur", $id);
+	    if(DAO::remove($user)){
+	        echo $user->getLogin()." supprimé";
+	    }
 	}
 }

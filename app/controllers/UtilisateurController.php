@@ -59,7 +59,8 @@ class UtilisateurController extends ControllerBase{
 	
 	}
 
-	public function newUser(){
+	public function newUser()
+	{
 	    $user=new Utilisateur();
 	    RequestUtils::setValuesToObject($user,$_POST);
 	    $site=DAO::getOne("models\Site", $_POST["site"]);
@@ -76,12 +77,14 @@ class UtilisateurController extends ControllerBase{
 	public function EditUser($id){
 	    $semantic=$this->jquery->semantic();
 	    $user=DAO::getOne("models\Utilisateur", $id);
+	    $user->idSite=$user->getSite()->getId();
+	    $user->idStatut=$user->getStatut()->getId();
 	    $form=$semantic->dataForm("utilisateur", $user);
 	    $form->setFields(["login","password\n","fondEcran","couleur\n","idSite","idStatut\n","submit"]);
 	    $form->setCaptions(["Login","Mot de Passe","Fond d'écran","Couleur","Site","Statut","Update"]);
 	    $form->fieldAsDropDown("idSite",JArray::modelArray(DAO::getAll("models\Site"),"getId","getNom"));
 	    $form->fieldAsDropDown("idStatut\n",JArray::modelArray(DAO::getAll("models\Statut"),"getId","getLibelle"));
-	    $form->FieldAsSubmit("submit","green","UtilisateurController/UpdateUser/".$id,"#divUser");
+	    $form->fieldAsSubmit("submit","green","UtilisateurController/UpdateUser/".$id,"#divUser");
 	    echo $form->compile($this->jquery);
 	    echo $this->jquery->compile();
 	}

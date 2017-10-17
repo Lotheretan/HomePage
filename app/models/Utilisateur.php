@@ -132,6 +132,7 @@ class Utilisateur{
 		$this->statut;
 		$this->site;		
 	}
+	
 	public function __construct(){
 	    $this->site="";
 	    $this->statut="";

@@ -63,9 +63,8 @@ class SiteController extends ControllerBase{
 		$form->FieldAsSubmit("submit","green","SiteController/UpdateSite/".$id,"#site");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
-		
-		
 	}
+	
 	public function AjoutSite(){
 		$site=new Site();
 		RequestUtils::setValuesToObject($site,$_POST);
@@ -73,6 +72,7 @@ class SiteController extends ControllerBase{
 			echo $site->getNom()." ajouté";
 		}
 	}
+	
 	public function UpdateSite($id){
 		$site=DAO::getOne("models\Site", $id);
 		RequestUtils::setValuesToObject($site,$_POST);
@@ -81,6 +81,7 @@ class SiteController extends ControllerBase{
 		}
 		
 	}
+	
 	public function DeleteSite($id){
 		$site=DAO::getOne("models\Site", $id);
 		if(DAO::remove($site)){

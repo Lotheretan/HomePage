@@ -70,7 +70,7 @@ class DataTable extends Widget {
 	protected function _generateBehavior($op,$params,JsUtils $js){
 		if(isset($this->_urls[$op])){
 			$params=\array_merge($params,["attr"=>"data-ajax"]);
-			$js->getOnClick("#".$this->identifier." ._".$op, $this->_urls[$op],$this->getTargetSelector($op),$params);
+			$js->ajaxOnClick("#".$this->identifier." ._".$op, $this->_urls[$op],$this->getTargetSelector($op),$params);
 		}
 	}
 
@@ -275,6 +275,7 @@ class DataTable extends Widget {
 
 	/**
 	 * Sets the associative array of urls for refreshing, updating or deleting
+	 * think of defining the update zone with the setTargetSelector method
 	 * @param string|array $urls associative array with keys refresh: for refreshing with search field or pagination, edit : for updating a row, delete: for deleting a row
 	 * @return DataTable
 	 */
@@ -326,6 +327,11 @@ class DataTable extends Widget {
 	}
 
 
+	/**
+	 * Adds a search input in toolbar
+	 * @param string $position
+	 * @return \Ajax\common\html\HtmlDoubleElement
+	 */
 	public function addSearchInToolbar($position=Direction::RIGHT){
 		return $this->addInToolbar($this->getSearchField())->setPosition($position);
 	}
@@ -349,6 +355,10 @@ class DataTable extends Widget {
 		return $this;
 	}
 
+	/**
+	 * Returns a form corresponding to the Datatable
+	 * @return \Ajax\semantic\html\collections\form\HtmlForm
+	 */
 	public function asForm(){
 		return $this->getForm();
 	}
@@ -365,7 +375,7 @@ class DataTable extends Widget {
 	/**
 	 * Sets the response element selector for Edit and Delete request with ajax
 	 * @param string|array $_targetSelector string or associative array ["edit"=>"edit_selector","delete"=>"delete_selector"]
-	 * @return \Ajax\semantic\widgets\datatable\DataTable
+	 * @return DataTable
 	 */
 	public function setTargetSelector($_targetSelector) {
 		if(!\is_array($_targetSelector)){
@@ -449,6 +459,11 @@ class DataTable extends Widget {
 	}
 	public function setColWidths($_colWidths) {
 		$this->_colWidths = $_colWidths;
+		return $this;
+	}
+
+	public function setColAlignment($colIndex,$alignment){
+		$this->content["table"]->setColAlignment($colIndex,$alignment);
 		return $this;
 	}
 }

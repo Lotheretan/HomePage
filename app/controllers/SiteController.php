@@ -60,7 +60,7 @@ class SiteController extends ControllerBase{
 		$form=$semantic->dataForm("frmSite", $site);
 		$form->setFields(["nom","latitude","longitude","submit"]);
 		$form->setCaptions(["Nom","Latitude","Longitude","Update"]);
-		$form->FieldAsSubmit("submit","green","SiteController/UpdateSite/".$id,"#site");
+		$form->FieldAsSubmit("submit","green","SiteController/UpdateSite/".$id,"#mainSite");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
 	}

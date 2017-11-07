@@ -27,14 +27,12 @@ class Main extends ControllerBase{
 		$form=$semantic->htmlForm("frm1");
 		$form->addField(new HtmlFormInput("","Login"))->setWidth(3);
 		$form->addField(new HtmlFormInput("","Password","password"))->setWidth(3);
-		$form->addButton("","Validez")->asSubmit("Login","Password");
+		$form->addButton("","Validez")->asSubmit("Main/connect");
 		//$fields=$form->addFields();
 		echo $form;
 	}
-	public function connect(){
-		
-		
-		$_SESSION["user"]=DAO::getAll("Utilisateur", "login=");
+	public function connect($login,$password){
+		$_SESSION["user"]=DAO::getOne("Utilisateur", "login=.$login","password=.$password");
 		$this->index();
 	}
 	public function deconnecxion(){

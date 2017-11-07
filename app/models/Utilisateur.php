@@ -131,11 +131,15 @@ class Utilisateur{
 	public function __toString(){
 		$this->statut;
 		$this->site;		
+		$this->login;
+		$this->password;
 	}
 	
 	public function __construct(){
 	    $this->site="";
 	    $this->statut="";
+	    $this->login="";
+	    $this->password="";
 	}
 
 }

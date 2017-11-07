@@ -50,6 +50,10 @@ class HtmlModal extends HtmlSemDoubleElement {
 		return $this;
 	}
 
+	/**
+	 * @param string|BaseHtml $action
+	 * @return HtmlButton
+	 */
 	public function addAction($action){
 		if(!$action instanceof BaseHtml){
 			$class="";
@@ -59,11 +63,19 @@ class HtmlModal extends HtmlSemDoubleElement {
 			if(\array_search($action, ["Close","Cancel","No"])!==false){
 				$class="cancel";
 			}
-			$action=new HtmlButton("action-".$this->identifier,$action);
+			$action=new HtmlButton("action-".$this->identifier."-".\sizeof($this->content["actions"]->getContent()),$action);
 			if($class!=="")
 				$action->addToProperty("class", $class);
 		}
 		return $this->addElementInPart($action, "actions");
+	}
+
+	/**
+	 * @param int $index
+	 * @return HtmlButton
+	 */
+	public function getAction($index){
+		return $this->content["actions"]->getContent()[$index];
 	}
 
 	public function addContent($content,$before=false){
@@ -174,5 +186,9 @@ class HtmlModal extends HtmlSemDoubleElement {
 
 	public function jsHide() {
 		return $this->jsDo("hide");
+	}
+
+	public function onHidden($js){
+		$this->_params["onHidden"]=$js;
 	}
 }

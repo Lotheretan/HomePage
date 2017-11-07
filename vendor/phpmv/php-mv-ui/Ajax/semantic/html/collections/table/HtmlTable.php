@@ -11,6 +11,7 @@ use Ajax\service\JArray;
 use Ajax\semantic\html\content\table\HtmlTR;
 use Ajax\semantic\html\collections\table\traits\TableTrait;
 use Ajax\semantic\html\content\table\HtmlTD;
+use Ajax\semantic\html\base\constants\TextAlignment;
 
 /**
  * Semantic HTML Table component
@@ -228,6 +229,23 @@ class HtmlTable extends HtmlSemDoubleElement {
 		return $this->colAlign($colIndex, "colLeft");
 	}
 
+	public function setColAlignment($colIndex,$alignment){
+		switch ($alignment){
+			case TextAlignment::LEFT:
+				$function="colLeft";
+				break;
+			case TextAlignment::RIGHT:
+				$function="colRight";
+				break;
+			case TextAlignment::CENTER:
+				$function="colCenter";
+				break;
+			default:$function="colLeft";
+		}
+		$this->colAlign($colIndex, $function);
+		return $this;
+	}
+
 	private function colAlign($colIndex, $function) {
 		if (\is_array($colIndex)) {
 			foreach ( $colIndex as $cIndex ) {
@@ -404,6 +422,12 @@ class HtmlTable extends HtmlSemDoubleElement {
 				$part->getCell(0, $i)->setWidth($widths[$i]);
 			}
 		}
+		return $this;
+	}
+
+	public function mergeIdentiqualValues($colIndex,$function="strip_tags"){
+		$body=$this->getBody();
+		$body->mergeIdentiqualValues($colIndex,$function);
 		return $this;
 	}
 }

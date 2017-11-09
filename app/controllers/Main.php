@@ -25,15 +25,22 @@ class Main extends ControllerBase{
 	public function connecxion(){
 		$semantic=$this->jquery->semantic();
 		$form=$semantic->htmlForm("frm1");
-		$form->addField(new HtmlFormInput("","Login"))->setWidth(3);
-		$form->addField(new HtmlFormInput("","Password","password"))->setWidth(3);
-		$form->addButton("","Validez")->asSubmit("Main/connect");
+		$form->addField(new HtmlFormInput("Login","Login"))->setWidth(3);
+		$form->addField(new HtmlFormInput("Password","Password","password"))->setWidth(3);
+		$form->addSubmit("submitForm", "Connexion","basic","Main/connect","#divUsers");
 		//$fields=$form->addFields();
 		echo $form;
+		echo $this->jquery->compile($this->view);
 	}
-	public function connect($login,$password){
-		$_SESSION["user"]=DAO::getOne("Utilisateur", "login=.$login","password=.$password");
-		$this->index();
+	public function connect(){
+		$login=$_POST["Login"];
+		if($_SESSION["userLog"]=DAO::getOne("models\Utilisateur","login")
+				/*&& $_SESSION["userPass"]=DAO::getOne("models\Utilisateur",$_POST["Password"])*/){
+		echo "ça marche";
+		//$this->index();
+		}else{
+			echo "ça morche po";
+		}
 	}
 	public function deconnecxion(){
 		if(array_key_exists("autoConnect", $_COOKIE)){

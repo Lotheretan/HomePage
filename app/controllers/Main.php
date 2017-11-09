@@ -33,15 +33,16 @@ class Main extends ControllerBase{
 		echo $this->jquery->compile($this->view);
 	}
 	public function connect(){
-		$login=$_POST["Login"];
-		if($_SESSION["userLog"]=DAO::getOne("models\Utilisateur","login")
-				/*&& $_SESSION["userPass"]=DAO::getOne("models\Utilisateur",$_POST["Password"])*/){
+	    if($_SESSION["userLog"]=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'")
+	        && $_SESSION["userPass"]=DAO::getOne("models\Utilisateur","password='".$_POST['Password']."'")){
 		echo "ça marche";
 		//$this->index();
 		}else{
 			echo "ça morche po";
 		}
 	}
+	
+	
 	public function deconnecxion(){
 		if(array_key_exists("autoConnect", $_COOKIE)){
 			unset($_COOKIE['autoConnect']);

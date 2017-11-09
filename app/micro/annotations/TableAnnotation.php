@@ -11,3 +11,4 @@ namespace micro\annotations;
 class TableAnnotation extends BaseAnnotation {
 	public $name;
 }
+ 

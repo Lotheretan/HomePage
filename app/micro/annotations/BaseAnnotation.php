@@ -16,7 +16,7 @@ class BaseAnnotation extends Annotation {
 		$reflect=new \ReflectionClass($this);
 		$props=$reflect->getProperties();
 		return $props;
-	}
+	} 
 
 	public function getPropertiesAndValues($props=NULL) {
 		$ret=array ();

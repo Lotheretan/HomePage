@@ -4,6 +4,8 @@ return array(
   '#namespace' => 'controllers',
   '#uses' => array (
   'JsUtils' => 'Ajax\\JsUtils',
+  'DAO' => 'micro\\orm\\DAO',
+  'HtmlFormInput' => 'Ajax\\semantic\\html\\collections\\form\\HtmlFormInput',
 ),
   '#traitMethodOverrides' => array (
   'controllers\\Main' => 

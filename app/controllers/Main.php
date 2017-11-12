@@ -12,17 +12,17 @@ class Main extends ControllerBase{
 	public function index(){
 		$semantic=$this->jquery->semantic();
 		$semantic->htmlHeader("header",1,"Accueil du site");
-		$bt=$semantic->htmlButton("bt","Utilisateur");
+		$bt=$semantic->htmlButton("bt","Utilisateurs");
 		$bt->asLink("UtilisateurController");
 		$bt2=$semantic->htmlButton("bt2","Sites");
 		$bt2->asLink("SiteController");
 		$bts=$semantic->htmlButtonGroups("Buttons",["Connexion","Deconnexion"]);
-		$bts->setPropertyValues("data-ajax", ["Main/connecxion/","Main/deconnecxion/"]);
+		$bts->setPropertyValues("data-ajax", ["Main/connexion/","Main/disconnect/"]);
 		$bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
 		$this->jquery->compile($this->view);
 		$this->loadView("index.html");
 	}
-	public function connecxion(){
+	public function connexion(){
 		$semantic=$this->jquery->semantic();
 		$form=$semantic->htmlForm("frm1");
 		$form->addField(new HtmlFormInput("Login","Login"))->setWidth(3);
@@ -33,6 +33,7 @@ class Main extends ControllerBase{
 		echo $this->jquery->compile($this->view);
 	}
 	public function connect(){
+
 	    if($_SESSION["userLog"]=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'")
 	        && $_SESSION["userPass"]=DAO::getOne("models\Utilisateur","password='".$_POST['Password']."'")){
 		echo "ça marche";
@@ -42,8 +43,7 @@ class Main extends ControllerBase{
 		}
 	}
 	
-	
-	public function deconnecxion(){
+	public function disconnect(){
 		if(array_key_exists("autoConnect", $_COOKIE)){
 			unset($_COOKIE['autoConnect']);
 			setcookie("autoConnect", "", time()-3600,"/");

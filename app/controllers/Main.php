@@ -3,6 +3,7 @@ namespace controllers;
 use Ajax\JsUtils;
 use micro\orm\DAO;
 use Ajax\semantic\html\collections\form\HtmlFormInput;
+use libraries;
  /**
  * Controller Main
  *@property JsUtils $jquery
@@ -20,7 +21,7 @@ class Main extends ControllerBase{
 		$bts->setPropertyValues("data-ajax", ["Main/connexion/","Main/disconnect/"]);
 		$bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
 		$this->jquery->compile($this->view);
-		$this->loadView("index.html");
+		$this->loadView("index.html",array("divUsers"=>libraries\Auth::getInfoUser()));
 	}
 	public function connexion(){
 		$semantic=$this->jquery->semantic();
@@ -36,10 +37,11 @@ class Main extends ControllerBase{
 
 	    if($_SESSION["userLog"]=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'")
 	        && $_SESSION["userPass"]=DAO::getOne("models\Utilisateur","password='".$_POST['Password']."'")){
-		echo "ça marche";
+		echo "Bienvenue utilisateur : '".$_POST['Login']."'";
+		
 		//$this->index();
 		}else{
-			echo "ça morche po";
+			echo "Mauvais login or/and mot de passe ! ";
 		}
 	}
 	
@@ -53,6 +55,9 @@ class Main extends ControllerBase{
 				'disabled' => true
 		);
 		
+	}
+	public function getInfoUser(){
+		echo libraries\Auth::getInfoUser();
 	}
 
 }

@@ -4,6 +4,7 @@ use Ajax\JsUtils;
 use micro\orm\DAO;
 use Ajax\semantic\html\collections\form\HtmlFormInput;
 use libraries;
+use Ajax\semantic\html\collections\form\HtmlFormField;
  /**
  * Controller Main
  *@property JsUtils $jquery
@@ -17,9 +18,16 @@ class Main extends ControllerBase{
 		$bt->asLink("UtilisateurController");
 		$bt2=$semantic->htmlButton("bt2","Sites");
 		$bt2->asLink("SiteController");
-		$bts=$semantic->htmlButtonGroups("Buttons",["Connexion","Deconnexion"]);
-		$bts->setPropertyValues("data-ajax", ["Main/connexion/","Main/disconnect/"]);
-		$bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
+		if(!isset($_SESSION["user"]))
+		{
+    		$bts=$semantic->htmlButtonGroups("Buttons",["Connexion","Deconnexion"]);
+    		$bts->setPropertyValues("data-ajax", ["Main/connexion/","Main/disconnect/"]);
+    		$bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);}
+    		else{
+		    $bt3=$semantic->htmlButton("bt3","Deconnexion");
+		    $bt3->asLink("Main/disconnect/");
+		}
+		
 		$this->jquery->compile($this->view);
 		$this->loadView("index.html",array("divUsers"=>libraries\Auth::getInfoUser()));
 	}
@@ -32,17 +40,18 @@ class Main extends ControllerBase{
 		//$fields=$form->addFields();
 		echo $form;
 		echo $this->jquery->compile($this->view);
+		
 	}
 	public function connect(){
 	    $user=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'");
 	    if(isset($user)){
 	        if($user->getPassword()==$_POST["Password"]){
 	            $_SESSION["user"]=$user;
-	            echo "Bienvenue utilisateur : '".$user->getLogin()."'";
+	            echo "Bienvenue utilisateur : ".$user->getLogin();
 		}else{
-			echo "Mauvais login or/and mot de passe ! ";
-		}}
-		else {/*getInfoUser();*/}
+			echo "Mauvais identifiant et/ou mot de passe ! ";
+		}
+	    }else {getInfoUser();}
 	}
 	
 	public function disconnect(){

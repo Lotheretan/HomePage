@@ -35,8 +35,8 @@ class Main extends ControllerBase{
 	}
 	public function connect(){
 
-	    if($_SESSION["userLog"]=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'")
-	        && $_SESSION["userPass"]=DAO::getOne("models\Utilisateur","password='".$_POST['Password']."'")){
+	    if($_SESSION["user"]=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'")
+	        && $_SESSION["user"]=DAO::getOne("models\Utilisateur","password='".$_POST['Password']."'")){
 		echo "Bienvenue utilisateur : '".$_POST['Login']."'";
 		
 		//$this->index();

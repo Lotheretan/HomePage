@@ -46,10 +46,10 @@ class Auth {
 	 * ou les boutons de connexion si personne n'est connecté
 	 * @return string
 	 */
-	public static function getInfoUser($style="info"){
+	public static function getInfoUser(){
 		$user=self::getUser();
 		if(isset($user)){
-			$infoUser="<a class='btn btn-{$style}' href='Accueil/disconnect'>Déconnexion <span class='label label-success'>".$user."</span></a>";
+			$infoUser=$user;
 		}else{
 			echo "!!!! ERREUR !!!!";
 		}

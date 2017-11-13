@@ -34,26 +34,23 @@ class Main extends ControllerBase{
 		echo $this->jquery->compile($this->view);
 	}
 	public function connect(){
-		$user=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'");
-		if(isset($user)){
-			if($user->getPassword()==$_POST["Password"]){
-				$_SESSION["user"]=$user;
-				echo "Bienvenue utilisateur : '".$user->getLogin()."'";
-			}
+	    $user=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'");
+	    if(isset($user)){
+	        if($user->getPassword()==$_POST["Password"]){
+	            $_SESSION["user"]=$user;
+	            echo "Bienvenue utilisateur : '".$user->getLogin()."'";
 		}else{
 			echo "Mauvais login or/and mot de passe ! ";
-		}
+		}}
+		else {/*getInfoUser();*/}
 	}
 	
 	public function disconnect(){
-		if(array_key_exists("autoConnect", $_COOKIE)){
-			unset($_COOKIE['autoConnect']);
-			setcookie("autoConnect", "", time()-3600,"/");
-		}
-		$_SESSION = array();
-		$_SESSION['KCFINDER'] = array(
-				'disabled' => true
-		);
+		// On détruit les variables de notre session
+		session_unset ();
+		// On détruit notre session
+		session_destroy ();
+
 		
 	}
 	public function getInfoUser(){

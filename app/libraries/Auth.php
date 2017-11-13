@@ -23,9 +23,9 @@ class Auth {
 	 * Retourne vrai si un utilisateur est connecté
 	 * @return boolean
 	 */
-	public static function isAuth(){
+	/*public static function isAuth(){
 		return null!==self::getUser();
-	}
+	}*/
 
 	/**
 	 * Retourne vrai si un utilisateur de type administrateur est connecté<br>
@@ -50,9 +50,10 @@ class Auth {
 		$user=self::getUser();
 		if(isset($user)){
 			$infoUser=$user;
+			return $infoUser;
 		}else{
-			echo "!!!! ERREUR !!!!";
+			echo "Veuillez vous connecter";
 		}
-		return $infoUser;
+		
 	}
 }

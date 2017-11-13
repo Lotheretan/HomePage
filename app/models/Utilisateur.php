@@ -129,10 +129,7 @@ class Utilisateur{
 		$this->moteurs=$moteurs;
 	}
 	public function __toString(){
-		$this->statut;
-		$this->site;		
-		$this->login;
-		$this->password;
+		return $this->login;
 	}
 	
 	public function __construct(){

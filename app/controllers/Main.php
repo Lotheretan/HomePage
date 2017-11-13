@@ -34,12 +34,12 @@ class Main extends ControllerBase{
 		echo $this->jquery->compile($this->view);
 	}
 	public function connect(){
-
-	    if($_SESSION["user"]=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'")
-	        && $_SESSION["user"]=DAO::getOne("models\Utilisateur","password='".$_POST['Password']."'")){
-		echo "Bienvenue utilisateur : '".$_POST['Login']."'";
-		
-		//$this->index();
+		$user=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'");
+		if(isset($user)){
+			if($user->getPassword()==$_POST["Password"]){
+				$_SESSION["user"]=$user;
+				echo "Bienvenue utilisateur : '".$user->getLogin()."'";
+			}
 		}else{
 			echo "Mauvais login or/and mot de passe ! ";
 		}

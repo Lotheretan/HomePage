@@ -46,6 +46,7 @@ class HtmlStepItem extends HtmlAbsractItem {
 	}
 
 	public function setCompleted(){
+		$this->removePropertyValues("class", [StepStatus::COMPLETED,StepStatus::DISABLED]);
 		return $this->setStatus(StepStatus::COMPLETED);
 	}
 

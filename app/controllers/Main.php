@@ -14,23 +14,23 @@ class Main extends ControllerBase{
 	public function index(){
 		$semantic=$this->jquery->semantic();
 		$semantic->htmlHeader("header",1,"Accueil du site");
-		$bt=$semantic->htmlButton("bt","Utilisateurs");
-		$bt->asLink("UtilisateurController");
-		$bt2=$semantic->htmlButton("bt2","Sites");
-		$bt2->asLink("SiteController");
 		if(!isset($_SESSION["user"]))
 		{
-    		$bts=$semantic->htmlButtonGroups("Buttons",["Connexion","Deconnexion"]);
-    		$bts->setPropertyValues("data-ajax", ["Main/connexion/","Main/disconnect/"]);
-    		$bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);}
-    		else{
-		    $bt3=$semantic->htmlButton("bt3","Deconnexion");
-		    $bt3->asLink("Main/disconnect/");
+    		$bts=$semantic->htmlButtonGroups("Buttons",["Connexion"]);
+    		$bts->getOnClick("Main/connexion/","#divUsers");
 		}
-		
+    	else{
+    	    $bt=$semantic->htmlButton("bt","Utilisateurs");
+    	    $bt->asLink("UtilisateurController");
+    	    $bt2=$semantic->htmlButton("bt2","Sites");
+    	    $bt2->asLink("SiteController");
+    	    $bt3=$semantic->htmlButtonGroups("Buttons",["Deconnexion"]);
+    	    $bt3->getOnClick("Main/disconnect/","#divUsers");
+    	}		
 		$this->jquery->compile($this->view);
 		$this->loadView("index.html",array("divUsers"=>libraries\Auth::getInfoUser()));
 	}
+	
 	public function connexion(){
 		$semantic=$this->jquery->semantic();
 		$form=$semantic->htmlForm("frm1");
@@ -39,8 +39,7 @@ class Main extends ControllerBase{
 		$form->addSubmit("submitForm", "Connexion","basic","Main/connect","#divUsers");
 		//$fields=$form->addFields();
 		echo $form;
-		echo $this->jquery->compile($this->view);
-		
+		echo $this->jquery->compile($this->view);		
 	}
 	public function connect(){
 	    $user=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'");
@@ -59,6 +58,8 @@ class Main extends ControllerBase{
 		session_unset ();
 		// On détruit notre session
 		session_destroy ();
+		
+		$this->jquery->get("Main/connexion","#divUsers");
 
 		
 	}

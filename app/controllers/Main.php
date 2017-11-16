@@ -1,6 +1,7 @@
 <?php
 namespace controllers;
 use Ajax\JsUtils;
+use libraries\Auth;
 use micro\orm\DAO;
 use Ajax\semantic\html\collections\form\HtmlFormInput;
 use libraries;
@@ -28,7 +29,7 @@ class Main extends ControllerBase{
     	    $bt3->getOnClick("Main/disconnect/","#divUsers");
     	}		
 		$this->jquery->compile($this->view);
-		$this->loadView("index.html",array("divUsers"=>libraries\Auth::getInfoUser()));
+		$this->loadView("index.html",array("divUsers"=>Auth::getInfoUser()));
 	}
 	
 	public function connexion(){
@@ -44,7 +45,7 @@ class Main extends ControllerBase{
 	public function connect(){
 	    $user=DAO::getOne("models\Utilisateur","login='".$_POST['Login']."'");
 	    if(isset($user)){
-	        if($user->getPassword()==$_POST["Password"]){
+	        if($user->getPassword()===$_POST["Password"]){
 	            $_SESSION["user"]=$user;
 	            echo "Bienvenue utilisateur : ".$user->getLogin();
 		}else{
@@ -58,13 +59,10 @@ class Main extends ControllerBase{
 		session_unset ();
 		// On détruit notre session
 		session_destroy ();
-		
-		$this->jquery->get("Main/connexion","#divUsers");
+		$this->jquery->get("Main/index/","#divUsers");
+	
 
 		
-	}
-	public function getInfoUser(){
-		echo libraries\Auth::getInfoUser();
 	}
 
 }

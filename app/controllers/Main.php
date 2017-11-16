@@ -10,7 +10,8 @@ use libraries;
  **/
 class Main extends ControllerBase{
 
-	public function index(){
+	public function index()
+	{
 		$semantic=$this->jquery->semantic();
 		$semantic->htmlHeader("header",1,"Accueil du site");
 		$this->getButtons();
@@ -23,22 +24,22 @@ class Main extends ControllerBase{
 		
 		if(!isset($_SESSION["user"]))
 		{
-			$bts=$semantic->htmlButtonGroups("Buttons",["Connexion"]);
-			$bts->getOnClick("Main/connexion/","#divUsers");
+			$btConnect=$semantic->htmlButtonGroups("Buttons",["Connexion"]);
+			$btConnect->getOnClick("Main/connexion/","#divUsers");
 		}
 		else{
-			$bt=$semantic->htmlButton("bt","Utilisateurs");
-			$bt->asLink("UtilisateurController");
-			$bt2=$semantic->htmlButton("bt2","Sites");
-			$bt2->asLink("SiteController");
-			$bt3=$semantic->htmlButtonGroups("Buttons",["Deconnexion"]);
-			$bt3->getOnClick("Main/disconnect/","#divUsers");
+			$btUser=$semantic->htmlButton("btUser","Utilisateurs");
+			$btUser->asLink("UtilisateurController");
+			$btSites=$semantic->htmlButton("btSites","Sites");
+			$btSites->asLink("SiteController");
+			$btDisconnect=$semantic->htmlButtonGroups("Buttons",["Deconnexion"]);
+			$btDisconnect->getOnClick("Main/disconnect/","#divUsers");
 		}
 	}
 	
 	public function connexion(){
 		$semantic=$this->jquery->semantic();
-		$form=$semantic->htmlForm("frm1");
+		$form=$semantic->htmlForm("frm_connect");
 		$form->addField(new HtmlFormInput("Login","Login"))->setWidth(3);
 		$form->addField(new HtmlFormInput("Password","Password","password"))->setWidth(3);
 		$form->addSubmit("submitForm", "Connexion","basic","Main/connect","#divUsers");

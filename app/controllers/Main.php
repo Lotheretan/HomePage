@@ -4,6 +4,7 @@ use Ajax\JsUtils;
 use micro\orm\DAO;
 use Ajax\semantic\html\collections\form\HtmlFormInput;
 use libraries;
+use libraries\Auth;
  /**
  * Controller Main
  *@property JsUtils $jquery
@@ -27,13 +28,23 @@ class Main extends ControllerBase{
 			$btConnect=$semantic->htmlButtonGroups("Buttons",["Connexion"]);
 			$btConnect->getOnClick("Main/connexion/","#divUsers");
 		}
-		else{
-			$btUser=$semantic->htmlButton("btUser","Utilisateurs");
-			$btUser->asLink("UtilisateurController");
-			$btSites=$semantic->htmlButton("btSites","Sites");
-			$btSites->asLink("SiteController");
-			$btDisconnect=$semantic->htmlButtonGroups("Buttons",["Deconnexion"]);
-			$btDisconnect->getOnClick("Main/disconnect/","#divUsers");
+		else
+		{
+		    if($_SESSION["user"]->getStatut()!="Utilisateur")
+		    {
+    			$btUser=$semantic->htmlButton("btUser","Utilisateurs");
+    			$btUser->asLink("UtilisateurController");
+    			$btSites=$semantic->htmlButton("btSites","Sites");
+    			$btSites->asLink("SiteController");
+    			$btDisconnect=$semantic->htmlButtonGroups("Buttons",["Deconnexion"]);
+    			$btDisconnect->getOnClick("Main/disconnect/","#divUsers");
+		    }
+		    elseif ($_SESSION["user"]->getStatut()=="Utilisateur")
+		    {
+		        $btDisconnect=$semantic->htmlButtonGroups("Buttons",["Deconnexion"]);
+		        $btDisconnect->getOnClick("Main/disconnect/","#divUsers");
+		    }
+		    
 		}
 	}
 	
@@ -59,7 +70,7 @@ class Main extends ControllerBase{
 		}else{
 			echo "Mauvais identifiant et/ou mot de passe ! ";
 		}
-	    }else {getInfoUser();}
+	    }else {Auth::getInfoUser();}
 	    
 	}
 	

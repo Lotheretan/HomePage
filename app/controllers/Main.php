@@ -32,12 +32,15 @@ class Main extends ControllerBase{
 		{
 		    if($_SESSION["user"]->getStatut()!="Utilisateur")
 		    {
+		    	$btAdmin=$semantic->htmlButton("BtAdmin","Admin");
+		    	$btAdmin->asLink("Admin");
     			$btUser=$semantic->htmlButton("btUser","Utilisateurs");
     			$btUser->asLink("UtilisateurController");
     			$btSites=$semantic->htmlButton("btSites","Sites");
     			$btSites->asLink("SiteController");
     			$btDisconnect=$semantic->htmlButtonGroups("Buttons",["Deconnexion"]);
     			$btDisconnect->getOnClick("Main/disconnect/","#divUsers");
+    			
 		    }
 		    elseif ($_SESSION["user"]->getStatut()=="Utilisateur")
 		    {

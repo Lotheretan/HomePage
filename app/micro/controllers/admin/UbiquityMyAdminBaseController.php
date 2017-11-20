@@ -20,6 +20,7 @@ use micro\controllers\admin\popo\CacheFile;
 use Ajax\semantic\html\collections\form\HtmlFormFields;
 use micro\controllers\admin\popo\ControllerAction;
 use Ajax\semantic\html\collections\form\HtmlForm;
+use Ajax\semantic\html\base\constants\icons\WebContent;
 use micro\orm\creator\ModelsCreator;
 use micro\controllers\admin\traits\ModelsConfigTrait;
 use micro\utils\FsUtils;
@@ -51,10 +52,10 @@ class UbiquityMyAdminBaseController extends ControllerBase{
 		parent::initialize();
 		if(RequestUtils::isAjax()===false){
 			$semantic=$this->jquery->semantic();
-			$elements=["UbiquityMyAdmin","Models","Routes","Controllers","Cache","Config"];
+			$elements=["UbiquityMyAdmin","Accueil","Models","Routes","Controllers","Cache","Config"];
 			$mn=$semantic->htmlMenu("mainMenu",$elements);
 			$mn->getItem(0)->addClass("header")->addIcon("home big link");
-			$mn->setPropertyValues("data-ajax", ["index","models","routes","controllers","cache","config"]);
+			$mn->setPropertyValues("data-ajax", ["index","../../Main","models","routes","controllers","cache","config"]);
 			$mn->setActiveItem(0);
 			$mn->setSecondary();
 			$mn->getOnClick("Admin","#main-content",["attr"=>"data-ajax"]);

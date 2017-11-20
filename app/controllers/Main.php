@@ -32,6 +32,8 @@ class Main extends ControllerBase{
 		{
 		    if($_SESSION["user"]->getStatut()!="Utilisateur")
 		    {
+		    	$btAdmin=$semantic->htmlButton("BtAdmin","Admin");
+		    	$btAdmin->asLink("Admin");
     			$btUser=$semantic->htmlButton("btUser","Utilisateurs");
     			$btUser->asLink("UtilisateurController");
     			$btSites=$semantic->htmlButton("btSites","Sites");

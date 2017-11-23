@@ -2,7 +2,6 @@
 namespace controllers;
  use micro\orm\DAO;
 use models\Utilisateur;
-use Ajax\JsUtils;
 use micro\utils\RequestUtils;
 use Ajax\service\JArray;
 

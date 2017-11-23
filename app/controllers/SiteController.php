@@ -1,7 +1,6 @@
 <?php
 namespace controllers;
  use micro\orm\DAO;
-use Ajax\JsUtils;
 use micro\utils\RequestUtils;
 use models\Site;
 

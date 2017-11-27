@@ -23,6 +23,13 @@ return array(
   'HtmlFormFields' => 'Ajax\\semantic\\html\\collections\\form\\HtmlFormFields',
   'ControllerAction' => 'micro\\controllers\\admin\\popo\\ControllerAction',
   'HtmlForm' => 'Ajax\\semantic\\html\\collections\\form\\HtmlForm',
+  'WebContent' => 'Ajax\\semantic\\html\\base\\constants\\icons\\WebContent',
+  'ModelsCreator' => 'micro\\orm\\creator\\ModelsCreator',
+  'ModelsConfigTrait' => 'micro\\controllers\\admin\\traits\\ModelsConfigTrait',
+  'FsUtils' => 'micro\\utils\\FsUtils',
+  'ClassParser' => 'micro\\utils\\yuml\\ClassParser',
+  'Yuml' => 'micro\\utils\\yuml\\Yuml',
+  'ClassesParser' => 'micro\\utils\\yuml\\ClassesParser',
 ),
   '#traitMethodOverrides' => array (
   'micro\\controllers\\admin\\UbiquityMyAdminBaseController' => 

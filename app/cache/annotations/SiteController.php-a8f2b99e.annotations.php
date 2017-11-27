@@ -4,9 +4,9 @@ return array(
   '#namespace' => 'controllers',
   '#uses' => array (
   'DAO' => 'micro\\orm\\DAO',
-  'JsUtils' => 'Ajax\\JsUtils',
   'RequestUtils' => 'micro\\utils\\RequestUtils',
   'Site' => 'models\\Site',
+  'Auth' => 'libraries\\Auth',
 ),
   '#traitMethodOverrides' => array (
   'controllers\\SiteController' => 

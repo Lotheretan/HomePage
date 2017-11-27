@@ -5,7 +5,6 @@ return array(
   '#uses' => array (
   'DAO' => 'micro\\orm\\DAO',
   'Utilisateur' => 'models\\Utilisateur',
-  'JsUtils' => 'Ajax\\JsUtils',
   'RequestUtils' => 'micro\\utils\\RequestUtils',
   'JArray' => 'Ajax\\service\\JArray',
 ),

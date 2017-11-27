@@ -1,0 +1,10 @@
+filter:
+    excluded_paths:
+        - vendor/
+        - .settings/
+        - .micro/
+        - .metadata/
+checks:
+    php:
+        code_rating: true
+        duplication: true

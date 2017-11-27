@@ -85,5 +85,9 @@ class Lienweb{
 	 public function setUtilisateur($utilisateur){
 		$this->utilisateur=$utilisateur;
 	}
+	
+	public function __toString(){
+	    return $this->libelle;
+	}
 
 }

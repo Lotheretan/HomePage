@@ -2,11 +2,10 @@
 
 namespace controllers;
 
-use Ajax\JsUtils;
-use micro\orm\DAO;
 use Ajax\semantic\html\collections\form\HtmlFormInput;
-use libraries;
+use Ajax\service\JArray;
 use libraries\Auth;
+use micro\orm\DAO;
 
 /**
  * Controller Main
@@ -26,9 +25,7 @@ class Main extends ControllerBase {
 		$semantic = $this->jquery->semantic ();
 		
 		if (! isset ( $_SESSION ["user"] )) {
-			$btConnect = $semantic->htmlButtonGroups ( "Buttons", [ 
-					"Connexion" 
-			] );
+			$btConnect = $semantic->htmlButtonGroups ( "Buttons", ["Connexion"] );
 			$btConnect->getOnClick ( "Main/connexion/", "#divUsers" );
 		} else {
 			if (Auth::getUser ()->getStatut () != "Utilisateur") {
@@ -38,15 +35,14 @@ class Main extends ControllerBase {
 				$btUser->asLink ( "UtilisateurController" );
 				$btSites = $semantic->htmlButton ( "btSites", "Sites" );
 				$btSites->asLink ( "SiteController" );
-				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", [ 
-						"Deconnexion" 
-				] );
+				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", ["Deconnexion"] );
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
-			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
-				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", [ 
-						"Deconnexion" 
-				] );
+				$this->favoris();	
+			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") 
+			{
+				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", ["Deconnexion"] );
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
+				$this->favoris();				
 			}
 		}
 	}
@@ -62,18 +58,16 @@ class Main extends ControllerBase {
 	}
 	public function connect() {
 		$user = DAO::getOne ( "models\Utilisateur", "login='" . $_POST ['Login'] . "'" );
-		if (isset ( $user )) {
-			if ($user->getPassword () === $_POST ["Password"]) {
+		if (isset ( $user )) 
+		{
+			if ($user->getPassword () === $_POST ["Password"])
+			{
 				$_SESSION ["user"] = $user;
 				echo "Bienvenue utilisateur : " . $user->getLogin ();
 				$this->jquery->get ( "Main/index", "body" );
 				echo $this->jquery->compile ( $this->view );
-			} else {
-				echo "Mauvais identifiant et/ou mot de passe ! ";
-			}
-		} else {
-			echo "Mauvais identifiant et/ou mot de passe ! ";
-		}
+			} else {echo "Mauvais mot de passe ! ";}
+		} else {echo "L'utilisateur n'existe pas ! ";}
 	}
 	public function disconnect() {
 		// On détruit les variables de notre session
@@ -85,7 +79,37 @@ class Main extends ControllerBase {
 		$this->jquery->get ( "Main/index", "body" );
 		echo $this->jquery->compile ( $this->view );
 	}
-	public function getInfoUser() {
-		echo libraries\Auth::getInfoUser ();
+	
+	public function favoris() 
+	{
+	    /*$favList = DAO::getOne( "models\Lienweb", "idUtilisateur='".Auth::getUser()->getId()."'" );
+	    $semantic = $this->jquery->semantic ();
+	    $modal=$semantic->htmlModal("modalFav","Liste de vos favoris");
+	    $de=$semantic->dataTable("favoris", "models\Lienweb", $favList);
+	    //$de=$semantic->dataElement("de3-2",$favList);
+	    $de->fieldAsDropDown("idSite",JArray::modelArray(DAO::getAll("models\Lienweb"),"getId","getLibelle"));
+	    $de->setFields(["libelle","url","ordre","idSite","idUtilisateur"]);
+	    $de->setCaptions(["libelle","url ordre","idSite","idUtilisateur"]);
+	    $de->fieldAsHeader(0,3,"libelle");
+	    $modal=$de->asModal();
+	    //$modal=$dd->asModal();
+	    $modal->setActions(["Okay","Close"]);
+	    echo $modal;
+	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","$('#modalFav').modal('show');");
+	    $btModalFav->addIcon("star");
+	    echo $modal->compile($this->jquery);*/
+	    $semantic=$this->jquery->semantic();
+	    
+	    $modal=$semantic->htmlModal("modalFav","Profile Picture");
+	    $modal->addImageContent("https://semantic-ui.com/images/avatar/large/chris.jpg","<div class='ui header'>We've auto-chosen a profile image for you.</div>");
+	    $modal->setActions(["Okay","Cancel"]);
+	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","$('#modalFav').modal('show');");
+	    $btModalFav->addIcon("star");
+	    echo $modal->compile($this->jquery);
+	    
+	    
+	    $this->jquery->exec("$('#modal-connect').modal('show');",true);
+	    
+	     $this->jquery->compile($this->view);
 	}
 }

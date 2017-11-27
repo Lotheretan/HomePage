@@ -35,6 +35,7 @@ public function getButtons() {
 				$btUser->asLink ( "UtilisateurController" );
 				$btSites = $semantic->htmlButton ( "btSites", "Sites" );
 				$btSites->asLink ( "SiteController" );
+				$this->favoris();
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
 			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
@@ -42,6 +43,8 @@ public function getButtons() {
 				$btPara->asLink("SiteController");
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
+				$this->favoris();
+				
 			}
 		}
 	}
@@ -98,16 +101,16 @@ public function getButtons() {
 	    $btModalFav->addIcon("star");
 	    echo $modal->compile($this->jquery);*/
 	    $semantic=$this->jquery->semantic();
-	    
-	    $modal=$semantic->htmlModal("modalFav","Profile Picture");
-	    $modal->addImageContent("https://semantic-ui.com/images/avatar/large/chris.jpg","<div class='ui header'>We've auto-chosen a profile image for you.</div>");
+	    $modal=$semantic->htmlModal("modalFav","Favoris");
+	    $btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
+	    $btFav->getOnClick ( "LienWebController/index", "#modalFav" );
 	    $modal->setActions(["Okay","Cancel"]);
 	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","$('#modalFav').modal('show');");
 	    $btModalFav->addIcon("star");
 	    echo $modal->compile($this->jquery);
 	    
 	    
-	    $this->jquery->exec("$('#modal-connect').modal('show');",true);
+	    //$this->jquery->exec("$('#modalFav').modal('show');",true);
 	    
 	     $this->jquery->compile($this->view);
 	}

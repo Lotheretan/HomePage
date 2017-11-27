@@ -2,79 +2,107 @@
 namespace controllers;
  use libraries\Auth;
  use micro\orm\DAO;
+use micro\utils\RequestUtils;
+use models\Lienweb;
 
  /**
  * Controller LienWebController
  **/
 class LienWebController extends ControllerBase{
 
-	/*public function index()
-	{
-	    $favList = DAO::getOne( "models\Lienweb", "idUtilisateur='".Auth::getUser()->getId()."'" );
-	    $semantic = $this->jquery->semantic ();
-	    $dd=$semantic->htmlDropdown("dd3","Select friend")->asSelect("friend");
-	    $dd->addItem(["image"=>"https://semantic-ui.com/images/avatar/small/jenny.jpg","item"=>"Jenny Hess"]);
-	    $dd->addItem(["image"=>"https://semantic-ui.com/images/avatar/small/elliot.jpg","item"=>"Elliot Fu"]);
-	    echo $dd;
-	    $this->jquery->compile ( $this->view );
-	    $this->loadView ( "index.html" );
-	}*/
-    
-    public function index(){
+	
+    public function index()
+    {
         $semantic=$this->jquery->semantic();
-        
-        $frm=$semantic->defaultLogin("frm1");
-        $frm->removeField("Connection");
-        $frm->setCaption("forget", "Mot de passe oubli&eacute ?");
-        $frm->setCaption("remember", "Se souvenir de moi.");
-        $frm->setCaption("submit", "Connexion");
-        $frm->setCaption("login", "Pseudo");
-        $frm->setCaption("password", "Mot de passe");
-        $frm->fieldAsSubmit("submit","green fluide","SiteController/connected","#frm1-submit");
-        
-        if(!isset($_SESSION['user'])){
-            $btCo=$semantic->htmlButton("button-2","Se connecter","green","$('#modal-frm1').modal('show');");
-            $btCo->addIcon("sign in");
-        } else {
-            $bt_deco=$semantic->htmlButton("button-3","Se d&eacute;connecter","red");
-            $bt_deco->setProperty("data-ajax","button-3");
-            $bt_deco->getOnClick("SiteController/disconnected","body",["attr"=>"data-ajax"]);
-            
-            $bts=$semantic->htmlButtonGroups("button-1",["Liste des favoris","Ajout d'un favoris","Fermer"]);
-            $bts->setPropertyValues("data-ajax",["printLien/","ajoutfav/","close/"]);
-            $bts->getOnClick("SiteController","#list-site",["attr"=>"data-ajax"]);
-            
-            
-        }
-        
-        echo $frm->asModal();
-        $this->jquery->exec("$('#modal-connect').modal('show');",true);
-        
-        echo $this->jquery->compile($this->view);
-        $this->loadView("/index.html");
-    }
-    public function connected(){
-        $semantic=$this->jquery->semantic();
-        $user=DAO::getOne("models\Utilisateur","login='".$_POST['login']."'");
-        
-        if(isset($user)){
-            if($user->getPassword()===$_POST['password']){
-                $_SESSION["user"]=$user;
-                $this->jquery->get("LienWebController/index", "body");
-                
-            } else {
-                echo $semantic->htmlMessage("#btCo","Erreur, votre mot de passe ou login est incorrecte.","red");
-            }
-        } else {
-            echo $semantic->htmlMessage("#btCo","Erreur, votre mot de passe ou login est incorrecte.","red");
-        }
-        echo $this->jquery->compile($this->view);
+        //$bt0=$semantic->htmlButton("btAccueil","Accueil");
+        //$bt0->asLink("Main");
+        $bts=$semantic->htmlButtonGroups("buttons",["Liste des favoris","Ajouter un favoris..."]);
+        $bts->setPropertyValues("data-ajax", ["LienWebController/all/","LienWebController/addFav/"]);
+        $bts->getOnClick("","#modalFav",["attr"=>"data-ajax"]);
+        $this->jquery->compile($this->view);
+        $this->loadView("Lienweb/index.html");
     }
     
-    public function disconnected(){
-        session_unset();
-        session_destroy();
-        $this->jquery->get("SiteController/index", "body");
-        echo $this->jquery->compile($this->view);
-
-}}
+    public function all()
+    {
+        $userId=Auth::getUser()->getId();
+        $lien=DAO::getAll("models\Lienweb","idUtilisateur='".$userId."'");
+        $semantic=$this->jquery->semantic();
+        $table=$semantic->dataTable("favoris", "models\Lienweb", $lien);
+        $table->setIdentifierFunction(function($i,$o){return $o->getId();});
+        $table->setFields(["libelle","url","ordre"]);
+        $table->setCaptions(["Nom", "URL","ordre"]);
+        $table->addEditButton();
+        $table->addDeleteButton();
+        $table->setUrls(["","LienWebController/EditFav/","LienWebController/DeleteFav/"]);
+        $table->setTargetSelector("#modalFav");
+        echo $table->compile($this->jquery);
+        echo $this->jquery->compile();
+        
+    }
+    
+    public function addFav()
+    {
+        $semantic=$this->jquery->semantic();
+        $lien=new Lienweb();
+        $form=$semantic->dataForm("utilisateur", $lien);
+        $form->setFields(["libelle","url","submit","clear"]);
+        $form->setCaptions(["Nom","URL","Valider","Reset"]);
+        $form->FieldAsSubmit("submit","green","LienWebController/newFav/","#modalFav");
+        $form->fieldAsReset("clear");
+        echo $form->compile($this->jquery);
+        echo $this->jquery->compile();
+        
+    }
+    
+    public function newFav()
+    {
+        $userId=Auth::getUser()->getId();
+        $lien=new Lienweb();
+        RequestUtils::setValuesToObject($lien,$_POST);
+        $user=DAO::getOne("models\Utilisateur", $userId);
+        $lien->setUtilisateur($user);
+        if(DAO::insert($lien))
+        {
+            echo $lien->getLibelle()." ajouté";
+        }
+        else 
+        {
+            echo "Une erreur est survenu";
+        }        
+    }
+    
+    
+    public function EditFav($id)
+    {
+        $semantic=$this->jquery->semantic();
+        $lien=DAO::getOne("models\Lienweb", $id);
+        $form=$semantic->dataForm("lienweb", $lien);
+        $form->setFields(["libelle","url","ordre","submit"]);
+        $form->setCaptions(["Nom","url","ordre","Update"]);
+        $form->fieldAsSubmit("submit","green","LienWebController/UpdateFav/".$id,"#modalFav");
+        echo $form->compile($this->jquery);
+        echo $this->jquery->compile();
+    }
+    
+    
+    public function UpdateFav($id)
+    {
+        $lien=DAO::getOne("models\Lienweb", $id);
+        RequestUtils::setValuesToObject($lien,$_POST);
+        if(DAO::update($lien))
+        {
+            echo $lien->getLibelle()." modifié";
+        }
+        
+    }
+    
+    public function DeleteFav($id)
+    {
+        $lien=DAO::getOne("models\Lienweb", $id);
+        if(DAO::remove($lien))
+        {
+            echo $lien->getLibelle()." supprimé";
+        }
+    }
+}

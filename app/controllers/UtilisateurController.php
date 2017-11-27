@@ -10,10 +10,12 @@ use Ajax\service\JArray;
  * Controller UtilisateurController
  * @property JsUtils $jquery
  **/
-class UtilisateurController extends ControllerBase{
+class UtilisateurController extends ControllerBase
+{
 
 
-    public function index(){
+    public function index()
+    {
         $semantic=$this->jquery->semantic();
         $bt0=$semantic->htmlButton("btAccueil","Accueil");
         $bt0->asLink("Main");
@@ -24,7 +26,8 @@ class UtilisateurController extends ControllerBase{
         $this->loadView("Utilisateur/index.html");
     }
 	
-	public function all(){
+	public function all()
+	{
 		$user=DAO::getAll("models\Utilisateur");
 		$semantic=$this->jquery->semantic();
 		$table=$semantic->dataTable("utilisateur", "models\Utilisateur", $user);
@@ -40,7 +43,8 @@ class UtilisateurController extends ControllerBase{
 	
 	}
 	
-	public function addUser(){
+	public function addUser()
+	{
 		$semantic=$this->jquery->semantic();
 		$user=new Utilisateur();
 		$sites=DAO::getAll("models\Site");
@@ -66,14 +70,16 @@ class UtilisateurController extends ControllerBase{
 	    $statut=DAO::getOne("models\Statut", $_POST["statut"]);
 	    $user->setSite($site);
 	    $user->setStatut($statut);
-	    if(DAO::insert($user)){
+	    if(DAO::insert($user))
+	    {
 	        echo $user->getLogin()." ajouté";
 	    }
 	    
 	}
 	
 
-	public function EditUser($id){
+	public function EditUser($id)
+	{
 	    $semantic=$this->jquery->semantic();
 	    $user=DAO::getOne("models\Utilisateur", $id);
 	    $user->idSite=$user->getSite()->getId();
@@ -89,22 +95,26 @@ class UtilisateurController extends ControllerBase{
 	}
 	
 
-	public function UpdateUser($id){
+	public function UpdateUser($id)
+	{
 	    $user=DAO::getOne("models\Utilisateur", $id);
 	    $site=DAO::getOne("models\Site", $_POST["site"]);
 	    $statut=DAO::getOne("models\Statut", $_POST["statut"]);
 	    $user->setSite($site);
 	    $user->setStatut($statut);
 	    RequestUtils::setValuesToObject($user,$_POST);
-	    if(DAO::update($user)){
+	    if(DAO::update($user))
+	    {
 	        echo $user->getLogin()." modifié";
 	    }
 	    
 	}
 	
-	public function DeleteUser($id){
+	public function DeleteUser($id)
+	{
 	    $user=DAO::getOne("models\Utilisateur", $id);
-	    if(DAO::remove($user)){
+	    if(DAO::remove($user))
+	    {
 	        echo $user->getLogin()." supprimé";
 	    }
 	}

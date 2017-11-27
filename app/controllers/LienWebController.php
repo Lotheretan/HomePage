@@ -1,7 +1,7 @@
 <?php
 namespace controllers;
- use libraries\Auth;
- use micro\orm\DAO;
+use libraries\Auth;
+use micro\orm\DAO;
 use micro\utils\RequestUtils;
 use models\Lienweb;
 
@@ -14,8 +14,6 @@ class LienWebController extends ControllerBase{
     public function index()
     {
         $semantic=$this->jquery->semantic();
-        //$bt0=$semantic->htmlButton("btAccueil","Accueil");
-        //$bt0->asLink("Main");
         $bts=$semantic->htmlButtonGroups("buttons",["Liste des favoris","Ajouter un favoris..."]);
         $bts->setPropertyValues("data-ajax", ["LienWebController/all/","LienWebController/addFav/"]);
         $bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
@@ -25,13 +23,26 @@ class LienWebController extends ControllerBase{
     
     public function all()
     {
-        $userId=Auth::getUser()->getId();
-        $lien=DAO::getAll("models\Lienweb","idUtilisateur='".$userId."'");
-        $semantic=$this->jquery->semantic();
-        $table=$semantic->dataTable("favoris", "models\Lienweb", $lien);
-        $table->setIdentifierFunction(function($i,$o){return $o->getId();});
-        $table->setFields(["libelle","url","ordre"]);
-        $table->setCaptions(["Nom", "URL","ordre"]);
+        
+        if (Auth::getUser ()->getStatut () != "Utilisateur")
+        {
+            $lien=DAO::getAll("models\Lienweb");
+            $semantic=$this->jquery->semantic();
+            $table=$semantic->dataTable("favoris", "models\Lienweb", $lien);
+            //$table->setIdentifierFunction(function($i,$o){return $o->getId();});
+            $table->setFields(["libelle","url","ordre","Utilisateur"]);
+            $table->setCaptions(["Nom", "URL","ordre","Utilisateur"]);
+            
+        } elseif (Auth::getUser ()->getStatut () == "Utilisateur")
+        {
+            $userId=Auth::getUser()->getId();
+            $lien=DAO::getAll("models\Lienweb","idUtilisateur='".$userId."'");
+            $semantic=$this->jquery->semantic();
+            $table=$semantic->dataTable("favoris", "models\Lienweb", $lien);
+            $table->setIdentifierFunction(function($i,$o){return $o->getId();});
+            $table->setFields(["libelle","url","ordre"]);
+            $table->setCaptions(["Nom", "URL","ordre"]);
+        }
         $table->addEditButton();
         $table->addDeleteButton();
         $table->setUrls(["","LienWebController/EditFav/","LienWebController/DeleteFav/"]);

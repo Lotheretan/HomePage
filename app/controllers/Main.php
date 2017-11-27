@@ -85,37 +85,7 @@ public function getButtons() {
 	
 	public function favoris() 
 	{
-	    /*$favList = DAO::getOne( "models\Lienweb", "idUtilisateur='".Auth::getUser()->getId()."'" );
-	    $semantic = $this->jquery->semantic ();
-	    $modal=$semantic->htmlModal("modalFav","Liste de vos favoris");
-	    $de=$semantic->dataTable("favoris", "models\Lienweb", $favList);
-	    //$de=$semantic->dataElement("de3-2",$favList);
-	    $de->fieldAsDropDown("idSite",JArray::modelArray(DAO::getAll("models\Lienweb"),"getId","getLibelle"));
-	    $de->setFields(["libelle","url","ordre","idSite","idUtilisateur"]);
-	    $de->setCaptions(["libelle","url ordre","idSite","idUtilisateur"]);
-	    $de->fieldAsHeader(0,3,"libelle");
-	    $modal=$de->asModal();
-	    //$modal=$dd->asModal();
-	    $modal->setActions(["Okay","Close"]);
-	    echo $modal;
-	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","$('#modalFav').modal('show');");
-	    $btModalFav->addIcon("star");
-	    echo $modal->compile($this->jquery);
 	    $semantic=$this->jquery->semantic();
-	    /*$modal=$semantic->htmlModal("modalFav","Favoris");
-	    $btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
-	    $btFav->getOnClick ( "LienWebController/index", "#divUsers" );
-	    $modal->setActions(["Okay","Cancel"]);
-	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","#divUsers");
-	    $btModalFav->addIcon("star");
-	    echo $modal->compile($this->jquery);
-	    
-	    
-	    //$this->jquery->exec("$('#modalFav').modal('show');",true);
-	    
-	     //$this->jquery->compile($this->view);*/
-	    $semantic=$this->jquery->semantic();
-	    //$btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
 	    $btFav=$semantic->htmlButton("BtFav","Favoris","yellow");
 	    $btFav->addIcon("star");
 	    $btFav->getOnClick ( "LienWebController/index", "#divUsers" );

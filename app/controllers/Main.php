@@ -21,11 +21,11 @@ class Main extends ControllerBase {
 		$this->jquery->compile ( $this->view );
 		$this->loadView ( "index.html" );
 	}
-	public function getButtons() {
+public function getButtons() {
 		$semantic = $this->jquery->semantic ();
 		
 		if (! isset ( $_SESSION ["user"] )) {
-			$btConnect = $semantic->htmlButtonGroups ( "Buttons", ["Connexion"] );
+			$btConnect = $semantic->htmlButton( "Connex","Connexion");
 			$btConnect->getOnClick ( "Main/connexion/", "#divUsers" );
 		} else {
 			if (Auth::getUser ()->getStatut () != "Utilisateur") {
@@ -35,14 +35,13 @@ class Main extends ControllerBase {
 				$btUser->asLink ( "UtilisateurController" );
 				$btSites = $semantic->htmlButton ( "btSites", "Sites" );
 				$btSites->asLink ( "SiteController" );
-				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", ["Deconnexion"] );
+				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
-				$this->favoris();	
-			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") 
-			{
-				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", ["Deconnexion"] );
+			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
+				$btPara = $semantic->htmlButton("Para","Paramètres");
+				$btPara->asLink("SiteController");
+				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
-				$this->favoris();				
 			}
 		}
 	}

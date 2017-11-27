@@ -3,6 +3,8 @@ namespace controllers;
  use micro\orm\DAO;
 use micro\utils\RequestUtils;
 use models\Site;
+use libraries;
+use libraries\Auth;
 
  /**
  * Controller SiteController
@@ -13,19 +15,30 @@ class SiteController extends ControllerBase{
 	public function index(){
 		$semantic=$this->jquery->semantic();
 		$semantic->htmlHeader("header",1,"Liste des sites");
-		$bt0=$semantic->htmlButton("btAccueil","Accueil");
-		$bt0->asLink("Main");
-		$bt=$semantic->htmlButton("Bt","Afficher liste");
-		//$bt->onClick($this->addSite());
-		$bt->getOnClick("SiteController/all/","#mainSite");
-		$bt2=$semantic->htmlButton("Btadd","Ajouter site");
-		//$bt->onClick($this->addSite());
-		$bt2->getOnClick("SiteController/addSite","#mainSite");
+		$this->getButtons();
 		$this->jquery->compile($this->view);
 		$this->loadView("site/index.html");
 		echo "<div id='mainSite'>";
-		$this->all();
+		//$this->all();
 		echo "</div>";
+	}
+	public function getButtons() {
+		$semantic = $this->jquery->semantic ();
+		if (Auth::getUser ()->getStatut () != "Utilisateur") {
+			$bt0=$semantic->htmlButton("btAccueil","Accueil");
+			$bt0->asLink("Main");
+			$bt=$semantic->htmlButton("Bt","Afficher liste");
+			$bt->getOnClick("SiteController/all","#mainSite");
+			$bt2=$semantic->htmlButton("Btadd","Ajouter site");
+			$bt2->getOnClick("SiteController/addSite","#mainSite");
+			//$this->all();
+		} elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
+			$bt0=$semantic->htmlButton("btAccueil","Accueil");
+			$bt0->asLink("Main");
+			$this->all2();
+			/*$btListe=$semantic->htmlButton("BtListe","Liste des sites");
+			 $btListe->getOnClick("SiteController/all2/","#mainSite");*/
+		}
 	}
 	public function all(){
 		$semantic=$this->jquery->semantic();
@@ -41,13 +54,22 @@ class SiteController extends ControllerBase{
 		echo $table->compile($this->jquery);
 		echo $this->jquery->compile();
 	}
+	public function all2(){
+		$semantic=$this->jquery->semantic();
+		$site=DAO::getAll("models\Site");
+		$table=$semantic->dataTable("site", "models\Site", $site);
+		$table->setIdentifierFunction(function($i,$o){return $o->getId();});
+		$table->setFields(["id","nom","latitude","longitude"]);
+		$table->setCaptions(["Identifiant", "Nom","Latitude","Longitude"]);
+		$table->setTargetSelector("#mainSite");
+	}
 	public function addSite(){
 		$semantic=$this->jquery->semantic();
 		$this->jquery->compile($this->view);
 		$site=new Site();
 		$form=$semantic->dataForm("frm1site", $site);
-		$form->setFields(["nom","longitude","latitude","ecart","fondEcran","couleur","ordre","option","submit"]);
-		$form->setCaptions(["Nom","Longitude","Latitude","Ecart","Fond d'écran","Couleur","Ordre","Option","Valider"]);
+		$form->setFields(["nom","latitude","longitude","ecart","fondEcran","couleur","ordre","option","submit"]);
+		$form->setCaptions(["Nom","Latitude","Longitude","Ecart","Fond d'écran","Couleur","Ordre","Option","Valider"]);
 		$form->FieldAsSubmit("submit","green","SiteController/AjoutSite","#mainSite");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();

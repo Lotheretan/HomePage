@@ -1,13 +1,13 @@
 filter:
     excluded_paths:
-        - "vendor/"
-        - ".settings/"
-        - ".micro/"
-        - ".metadata/"
-        - "app/micro/"
+        - vendor/
+        - .settings/
+        - .micro/
+        - .metadata/
+        - app/micro/
         # Everything in a root level "tests" directory will be excluded
     dependency_paths:
-        - "app\micro\orm\DAO"
+        - app\micro\orm\DAO
         # Everything in a root level "lib" directory will be excluded from analysis
         # but treated as a dependency
 checks:

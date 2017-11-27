@@ -12,21 +12,27 @@ use micro\orm\DAO;
  * @property JsUtils $jquery
  *
  */
-class Main extends ControllerBase {
-	public function index() {
+class Main extends ControllerBase 
+{
+	public function index() 
+	{
 		$semantic = $this->jquery->semantic ();
 		$semantic->htmlHeader ( "header", 1, "Accueil du site" );
 		$this->getButtons ();
 		$this->jquery->compile ( $this->view );
 		$this->loadView ( "index.html" );
 	}
-public function getButtons() {
+	
+public function getButtons() 
+{
 		$semantic = $this->jquery->semantic ();
 		
-		if (! isset ( $_SESSION ["user"] )) {
+		if (! isset ( $_SESSION ["user"] )) 
+		{
 			$btConnect = $semantic->htmlButton( "Connex","Connexion");
 			$btConnect->getOnClick ( "Main/connexion/", "#divUsers" );
-		} else {
+		} else 
+		{
 			if (Auth::getUser ()->getStatut () != "Utilisateur") {
 				$btAdmin = $semantic->htmlButton ( "BtAdmin", "Admin" );
 				$btAdmin->asLink ( "Admin" );
@@ -38,7 +44,8 @@ public function getButtons() {
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
 				
-			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
+			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") 
+			{
 				$btPara = $semantic->htmlButton("Para","Paramètres");
 				$btPara->asLink("SiteController");
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
@@ -49,7 +56,9 @@ public function getButtons() {
 			}
 		}
 	}
-	public function connexion() {
+	
+	public function connexion() 
+	{
 		$semantic = $this->jquery->semantic ();
 		$form = $semantic->htmlForm ( "frm_connect" );
 		$form->addField ( new HtmlFormInput ( "Login", "Login" ) )->setWidth ( 3 );
@@ -59,7 +68,9 @@ public function getButtons() {
 		echo $form;
 		echo $this->jquery->compile ( $this->view );
 	}
-	public function connect() {
+	
+	public function connect() 
+	{
 		$user = DAO::getOne ( "models\Utilisateur", "login='" . $_POST ['Login'] . "'" );
 		if (isset ( $user )) 
 		{
@@ -69,10 +80,17 @@ public function getButtons() {
 				echo "Bienvenue utilisateur : " . $user->getLogin ();
 				$this->jquery->get ( "Main/index", "body" );
 				echo $this->jquery->compile ( $this->view );
-			} else {echo "Mauvais mot de passe ! ";}
-		} else {echo "L'utilisateur n'existe pas ! ";}
+			} else 
+			{
+			    echo "Mauvais mot de passe ! ";
+			}
+		} else 
+		{
+		    echo "L'utilisateur n'existe pas ! ";
+		}
 	}
-	public function disconnect() {
+	public function disconnect() 
+	{
 		// On détruit les variables de notre session
 		session_unset ();
 		// On détruit notre session
@@ -88,6 +106,6 @@ public function getButtons() {
 	    $semantic=$this->jquery->semantic();
 	    $btFav=$semantic->htmlButton("BtFav","Favoris","yellow");
 	    $btFav->addIcon("star");
-	    $btFav->getOnClick ( "LienWebController/index", "#divUsers" );
+	    $btFav->getOnClick ( "LienWebController/index", "#divUsers");
 	}
 }

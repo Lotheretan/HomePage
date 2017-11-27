@@ -8,7 +8,8 @@ use models\Lienweb;
  /**
  * Controller LienWebController
  **/
-class LienWebController extends ControllerBase{
+class LienWebController extends ControllerBase
+{
 
 	
     public function index()
@@ -29,7 +30,6 @@ class LienWebController extends ControllerBase{
             $lien=DAO::getAll("models\Lienweb");
             $semantic=$this->jquery->semantic();
             $table=$semantic->dataTable("favoris", "models\Lienweb", $lien);
-            //$table->setIdentifierFunction(function($i,$o){return $o->getId();});
             $table->setFields(["libelle","url","ordre","Utilisateur"]);
             $table->setCaptions(["Nom", "URL","ordre","Utilisateur"]);
             

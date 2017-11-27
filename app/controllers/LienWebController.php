@@ -18,7 +18,7 @@ class LienWebController extends ControllerBase{
         //$bt0->asLink("Main");
         $bts=$semantic->htmlButtonGroups("buttons",["Liste des favoris","Ajouter un favoris..."]);
         $bts->setPropertyValues("data-ajax", ["LienWebController/all/","LienWebController/addFav/"]);
-        $bts->getOnClick("","#modalFav",["attr"=>"data-ajax"]);
+        $bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
         $this->jquery->compile($this->view);
         $this->loadView("Lienweb/index.html");
     }
@@ -35,7 +35,7 @@ class LienWebController extends ControllerBase{
         $table->addEditButton();
         $table->addDeleteButton();
         $table->setUrls(["","LienWebController/EditFav/","LienWebController/DeleteFav/"]);
-        $table->setTargetSelector("#modalFav");
+        $table->setTargetSelector("#divUsers");
         echo $table->compile($this->jquery);
         echo $this->jquery->compile();
         
@@ -48,7 +48,7 @@ class LienWebController extends ControllerBase{
         $form=$semantic->dataForm("utilisateur", $lien);
         $form->setFields(["libelle","url","submit","clear"]);
         $form->setCaptions(["Nom","URL","Valider","Reset"]);
-        $form->FieldAsSubmit("submit","green","LienWebController/newFav/","#modalFav");
+        $form->FieldAsSubmit("submit","green","LienWebController/newFav/","#divUsers");
         $form->fieldAsReset("clear");
         echo $form->compile($this->jquery);
         echo $this->jquery->compile();
@@ -80,7 +80,7 @@ class LienWebController extends ControllerBase{
         $form=$semantic->dataForm("lienweb", $lien);
         $form->setFields(["libelle","url","ordre","submit"]);
         $form->setCaptions(["Nom","url","ordre","Update"]);
-        $form->fieldAsSubmit("submit","green","LienWebController/UpdateFav/".$id,"#modalFav");
+        $form->fieldAsSubmit("submit","green","LienWebController/UpdateFav/".$id,"#divUsers");
         echo $form->compile($this->jquery);
         echo $this->jquery->compile();
     }

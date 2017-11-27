@@ -3,7 +3,6 @@
 namespace controllers;
 
 use Ajax\semantic\html\collections\form\HtmlFormInput;
-use Ajax\service\JArray;
 use libraries\Auth;
 use micro\orm\DAO;
 
@@ -38,11 +37,13 @@ public function getButtons() {
 				$this->favoris();
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
+				
 			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
 				$btPara = $semantic->htmlButton("Para","Paramètres");
 				$btPara->asLink("SiteController");
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
+				$btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
 				$this->favoris();
 				
 			}
@@ -99,19 +100,24 @@ public function getButtons() {
 	    echo $modal;
 	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","$('#modalFav').modal('show');");
 	    $btModalFav->addIcon("star");
-	    echo $modal->compile($this->jquery);*/
+	    echo $modal->compile($this->jquery);
 	    $semantic=$this->jquery->semantic();
-	    $modal=$semantic->htmlModal("modalFav","Favoris");
+	    /*$modal=$semantic->htmlModal("modalFav","Favoris");
 	    $btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
-	    $btFav->getOnClick ( "LienWebController/index", "#modalFav" );
+	    $btFav->getOnClick ( "LienWebController/index", "#divUsers" );
 	    $modal->setActions(["Okay","Cancel"]);
-	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","$('#modalFav').modal('show');");
+	    $btModalFav=$semantic->htmlButton("btModalFav","Favoris","yellow","#divUsers");
 	    $btModalFav->addIcon("star");
 	    echo $modal->compile($this->jquery);
 	    
 	    
 	    //$this->jquery->exec("$('#modalFav').modal('show');",true);
 	    
-	     $this->jquery->compile($this->view);
+	     //$this->jquery->compile($this->view);*/
+	    $semantic=$this->jquery->semantic();
+	    //$btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
+	    $btFav=$semantic->htmlButton("BtFav","Favoris","yellow");
+	    $btFav->addIcon("star");
+	    $btFav->getOnClick ( "LienWebController/index", "#divUsers" );
 	}
 }

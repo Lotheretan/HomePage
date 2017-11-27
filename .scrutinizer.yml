@@ -4,6 +4,7 @@ filter:
         - .settings/
         - .micro/
         - .metadata/
+        - app/micro/
 checks:
     php:
         code_rating: true

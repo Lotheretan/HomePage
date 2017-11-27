@@ -26,9 +26,7 @@ class Main extends ControllerBase {
 		$semantic = $this->jquery->semantic ();
 		
 		if (! isset ( $_SESSION ["user"] )) {
-			$btConnect = $semantic->htmlButtonGroups ( "Buttons", [ 
-					"Connexion" 
-			] );
+			$btConnect = $semantic->htmlButton( "Connex","Connexion");
 			$btConnect->getOnClick ( "Main/connexion/", "#divUsers" );
 		} else {
 			if (Auth::getUser ()->getStatut () != "Utilisateur") {
@@ -38,14 +36,12 @@ class Main extends ControllerBase {
 				$btUser->asLink ( "UtilisateurController" );
 				$btSites = $semantic->htmlButton ( "btSites", "Sites" );
 				$btSites->asLink ( "SiteController" );
-				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", [ 
-						"Deconnexion" 
-				] );
+				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
 			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
-				$btDisconnect = $semantic->htmlButtonGroups ( "Buttons", [ 
-						"Deconnexion" 
-				] );
+				$btPara = $semantic->htmlButton("Para","Paramètres");
+				$btPara->asLink("SiteController");
+				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
 			}
 		}
@@ -61,10 +57,12 @@ class Main extends ControllerBase {
 		echo $this->jquery->compile ( $this->view );
 	}
 	public function connect() {
+		//$semantic = $this->jquery->semantic ();
 		$user = DAO::getOne ( "models\Utilisateur", "login='" . $_POST ['Login'] . "'" );
 		if (isset ( $user )) {
 			if ($user->getPassword () === $_POST ["Password"]) {
 				$_SESSION ["user"] = $user;
+				
 				echo "Bienvenue utilisateur : " . $user->getLogin ();
 				$this->jquery->get ( "Main/index", "body" );
 				echo $this->jquery->compile ( $this->view );

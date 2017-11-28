@@ -44,8 +44,9 @@ class LienWebController extends ControllerBase
             $table->setFields(["libelle","url","ordre"]);
             $table->setCaptions(["Nom", "URL","ordre"]);
         }
-        $table->addEditButton();
-        $table->addDeleteButton();
+        /*$table->addEditButton();
+        $table->addDeleteButton();*/
+        $table->addEditDeleteButtons(true,["ajaxTransition"=>"random"]);
         $table->setUrls(["","LienWebController/EditFav/","LienWebController/DeleteFav/"]);
         $table->setTargetSelector("#divUsers");
         echo $table->compile($this->jquery);

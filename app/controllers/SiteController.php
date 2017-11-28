@@ -60,7 +60,12 @@ class SiteController extends ControllerBase{
 		$table->setIdentifierFunction(function($i,$o){return $o->getId();});
 		$table->setFields(["id","nom","latitude","longitude"]);
 		$table->setCaptions(["Identifiant", "Nom","Latitude","Longitude"]);
+		$table->addFieldButton(null,true,function($bt){$bt->setBasic()->addClass("_confirmation")->asIcon("edit");});
+		$table->setUrls(["SiteController/ChoisirSite"]);
 		$table->setTargetSelector("#mainSite");
+		$mess=$semantic->htmlMessage("msg1","Votre site actuel est : ".Auth::getUser ()->getSite());
+		$mess->setVariation("floating");
+		//echo $mess;
 	}
 	public function addSite(){
 		$semantic=$this->jquery->semantic();
@@ -107,6 +112,13 @@ class SiteController extends ControllerBase{
 		if(DAO::remove($site)){
 			echo $site->getNom()." supprimé";
 		}
+	}
+	public function ChoisirSite(){
+		$semantic=$this->jquery->semantic();
+		$modal=$semantic->htmlModal("modal1","Profile Picture");
+		$modal->addImageContent("https://semantic-ui.com/images/avatar/large/chris.jpg","<div class='ui header'>We've auto-chosen a profile image for you.</div>");
+		$modal->setActions(["Okay","Cancel"]);
+		echo $modal->compile($this->jquery);
 	}
 
 }

@@ -44,8 +44,6 @@ class LienWebController extends ControllerBase
             $table->setFields(["libelle","url","ordre"]);
             $table->setCaptions(["Nom", "URL","ordre"]);
         }
-        /*$table->addEditButton();
-        $table->addDeleteButton();*/
         $table->addEditDeleteButtons(true,["ajaxTransition"=>"random"]);
         $table->setUrls(["","LienWebController/EditFav/","LienWebController/DeleteFav/"]);
         $table->setTargetSelector("#divUsers");
@@ -63,6 +61,7 @@ class LienWebController extends ControllerBase
         $form->setCaptions(["Nom","URL","Valider","Reset"]);
         $form->FieldAsSubmit("submit","green","LienWebController/newFav/","#divUsers");
         $form->fieldAsReset("clear");
+        $form->addButtonInToolbar("Return");
         echo $form->compile($this->jquery);
         echo $this->jquery->compile();
         
@@ -94,6 +93,7 @@ class LienWebController extends ControllerBase
         $form->setFields(["libelle","url","ordre","submit"]);
         $form->setCaptions(["Nom","url","ordre","Update"]);
         $form->fieldAsSubmit("submit","green","LienWebController/UpdateFav/".$id,"#divUsers");
+        $form->addButtonInToolbar("Return");
         echo $form->compile($this->jquery);
         echo $this->jquery->compile();
     }

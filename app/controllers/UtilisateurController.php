@@ -32,8 +32,8 @@ class UtilisateurController extends ControllerBase
 		$semantic=$this->jquery->semantic();
 		$table=$semantic->dataTable("utilisateur", "models\Utilisateur", $user);
 		$table->setIdentifierFunction(function($i,$o){return $o->getId();});
-		$table->setFields(["id","login","couleur","fondEcran","statut","site"]);
-		$table->setCaptions(["Identifiant", "Login","Couleur","Fond d'écran","Statut","Site"]);
+		$table->setFields(["id","login","couleur","fondEcran","statut","site","moteurs"]);
+		$table->setCaptions(["Identifiant", "Login","Couleur","Fond d'écran","Statut","Site","Moteur de recherche"]);
 		$table->addEditButton();
 		$table->addDeleteButton();
 		$table->setUrls(["","UtilisateurController/EditUser/","UtilisateurController/DeleteUser/"]);

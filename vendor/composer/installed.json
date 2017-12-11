@@ -150,12 +150,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/phpMv/phpMv-UI.git",
-            "reference": "eb7f5d38dddb5cd81ae04e51f8fa6a88cc7470c1"
+            "reference": "966ba4cd11846088a7f0f1ea4f33ff5a9ec45e8c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpMv/phpMv-UI/zipball/eb7f5d38dddb5cd81ae04e51f8fa6a88cc7470c1",
-            "reference": "eb7f5d38dddb5cd81ae04e51f8fa6a88cc7470c1",
+            "url": "https://api.github.com/repos/phpMv/phpMv-UI/zipball/966ba4cd11846088a7f0f1ea4f33ff5a9ec45e8c",
+            "reference": "966ba4cd11846088a7f0f1ea4f33ff5a9ec45e8c",
             "shasum": ""
         },
         "require": {
@@ -167,7 +167,7 @@
             "semantic/ui": "~2.2.1",
             "twitter/bootstrap": "~3.3"
         },
-        "time": "2017-11-13T00:15:45+00:00",
+        "time": "2017-12-07T02:27:04+00:00",
         "type": "phpmv-ui",
         "installation-source": "source",
         "autoload": {

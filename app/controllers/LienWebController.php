@@ -129,10 +129,10 @@ class LienWebController extends ControllerBase
         RequestUtils::setValuesToObject($lien,$_POST);
         if(DAO::update($lien))
         {
-            //echo $lien->getLibelle()." modifié";
-            $message=$this->showSimpleMessage($lien->getLibelle()." modifié","","help circle");
+          $message=$this->showSimpleMessage($lien->getLibelle()." modifié","info","info");
         }
         echo $message;
+        echo $this->jquery->compile($this->view);
     }
     
     /*public function DeleteFav($id)
@@ -181,6 +181,7 @@ class LienWebController extends ControllerBase
             if(isset($timeout))
                 $message->setTimeout(3000);
                 return $message;
+                
     }
     
     private function showConfMessage($content,$type,$url,$responseElement,$data,$attributes=NULL){

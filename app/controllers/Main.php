@@ -5,6 +5,7 @@ namespace controllers;
 use Ajax\semantic\html\collections\form\HtmlFormInput;
 use libraries\Auth;
 use micro\orm\DAO;
+use Ajax\semantic\html\base\constants\Size;
 use Ajax\service\JArray;
 
 /**
@@ -47,7 +48,7 @@ public function getButtons()
 				$this->favoris();
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
-				//$this->body();
+				$this->recherche();
 				
 			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") 
 			{
@@ -59,12 +60,29 @@ public function getButtons()
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
 				$btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
 				$this->favoris();
-				//$this->body();
+				$this->recherche();
 				
 			}
 		}
 	}
 	
+	public function recherche() {
+	    if (!isset($_SESSION["user"])) {
+	        
+	    } else {
+	        $IdUser = $_SESSION["user"]->getId();
+	        $user = DAO::getOne("models\Utilisateur", $IdUser,true);
+	        $moteur = $user->getMoteur();
+	        
+	        $semantic = $this->jquery->semantic();
+	        $frmSearch = $semantic->htmlForm("frmSearch");
+	        $input=$frmSearch->addInput("q", "", "", "", "Rechercher...");
+	        $input->addAction("Go");
+	        $frmSearch->setProperty("action", $moteur->getCode());
+	        $frmSearch->setProperty("method", "get");
+	        $frmSearch->setProperty("target", "_blank");
+	    }
+	}
 	
 	public function body()
 	{
@@ -73,21 +91,48 @@ public function getButtons()
 	       
 	    } else
 	    {
+	       /* $user=$_SESSION ["user"];
+	        $id=$user->getLogin ();
 	        $semantic=$this->jquery->semantic();
-	        //$moteurs=DAO::getAll("models\Moteur");
-	        //$form=$semantic->dataForm("moteur", $moteurs);
-	        //$form->setFields(["moteur","search"]);
-	        //$form->fieldAsDropDown("moteurs",JArray::modelArray($moteurs,"getId","getNom"));
-	        //$moteur=DAO::getOne("models\Moteur", $form);
-	        $search=$semantic->htmlSearch("search2","Search...","search");
-	        $search->setUrl($this->url->get("/json/standardSearch/{query}"));
-	        //$form->FieldAsSubmit("Search","green","UtilisateurController/newUser/","#divUsers");
-	        echo $search->compile($this->jquery);
-	        //echo $form->compile($this->jquery);
+	        $moteur=DAO::getAll("models\Moteur");*/
+	        
+	        /*$user=DAO::getOne("models\Utilisateur", $id);
+	        $user->idSite=$user->getSite()->getId();
+	        $user->idStatut=$user->getStatut()->getId();*/
+	        //$user=DAO::getOne("models\Utilisateur", $id);
+	        
+	        /*$form=$semantic->dataForm("moteur", $user);
+	        $form->setFields(["moteurs","searchField","submit"]);
+	        $form->fieldAsInput(1);
+	        $form->setCaptions(["Moteur","","Search"]);
+	        $form->fieldAsDropDown("moteurs",JArray::modelArray($moteur,"getId","getNom"));
+	        //$form->fieldAsDropDown("idStatut\n",JArray::modelArray(DAO::getAll("models\Statut"),"getId","getLibelle"));
+	        $form->fieldAsSubmit("submit","green","Main/Search/".$query,"#table-messages");*/
+	        $semantic=$this->jquery->semantic();
+	        $frmSearch = $semantic->htmlForm("frmSearch");
+	        $moteur=DAO::getAll("models\Moteur");
+	        $input=$semantic->htmlInput("SearchInput")->setPlaceholder("Search...")->setTransparent();
+	        $input->addIcon("search");
+	        $input->setSize('12');
+	        $input->addDropdown("moteurs",JArray::modelArray($moteur,"getId","getNom"));
+	        $input->addAction("Rechercher...", "right");
+	        //$input->AddSubmit("submitForm", "Rechercher...", "basic", "Main/Search", "#divUsers");
+	        
+	        echo $input->compile($this->jquery);
 	        echo $this->jquery->compile();
 	    }
 	    
 	}
+	
+	public function Search($query)
+	{
+	    $moteur=DAO::getOne("models\Moteur", $_POST["moteurs"]);
+	    //$code=JArray::modelArray($moteur,"getId","getCode");
+	    $moteur->getCode();
+	    echo $moteur;
+	    
+	}
+	
 	
 	public function connexion() 
 	{

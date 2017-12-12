@@ -15,23 +15,6 @@ use models\Lienweb;
  **/
 class LienWebController extends ControllerBase
 {
-    
-    /**
-     * @var UbiquityMyAdminData
-     */
-    private $adminData;
-    
-    /**
-     * @var UbiquityMyAdminViewer
-     */
-    private $adminViewer;
-    
-    /**
-     * @var UbiquityMyAdminFiles
-     */
-    private $adminFiles;
-    
-    private $globalMessage;
 	
     public function index()
     {
@@ -65,13 +48,9 @@ class LienWebController extends ControllerBase
             $table->setFields(["libelle","url","ordre"]);
             $table->setCaptions(["Nom", "URL","ordre"]);
         }
-        //$table->addEditDeleteButtons(true,["ajaxTransition"=>"random"]);
-        //$table->addEditButton();
-        //$table->addDeleteButton();
         $table->setUrls(["","LienWebController/EditFav/","LienWebController/DeleteFav/"]);
         $table->setTargetSelector(["edit"=>"#divConfirm","delete"=>"#table-messages"]);
         $table->addEditDeleteButtons(true,["ajaxTransition"=>"random"]);
-        //$table->setTargetSelector("#divConfirm");
         echo $table->compile($this->jquery);
         echo $this->jquery->compile();
         
@@ -135,16 +114,14 @@ class LienWebController extends ControllerBase
         echo $this->jquery->compile($this->view);
     }
     
-    /*public function DeleteFav($id)
-    {
-        $lien=DAO::getOne("models\Lienweb", $id);
-        if(DAO::remove($lien))
-        {
-            echo $lien->getLibelle()." supprimé";
-        }
-    }*/
+    public function DeleteFav($id){
+        $table="LienWeb";
+        $controller = "LienWebController";
+        $this->delete($id,$table,$controller,"DeleteFav","#table-messages");
+        
+    }
     
-    private function getModelInstance($ids){
+   /* private function getModelInstance($ids){
         $table="Lienweb";
         $model=$this->getModelsNS()."\\".ucfirst($table);
         $ids=\explode("_", $ids);
@@ -220,23 +197,17 @@ class LienWebController extends ControllerBase
         return $value;
     }
     
-    /**
-     * @return UbiquityMyAdminData
-     */
+    
     public function _getAdminData(){
         return $this->getSingleton($this->adminData, "getUbiquityMyAdminData");
     }
     
-    /**
-     * @return UbiquityMyAdminViewer
-     */
+  
     public function _getAdminViewer(){
         return $this->getSingleton($this->adminViewer, "getUbiquityMyAdminViewer");
     }
     
-    /**
-     * @return UbiquityMyAdminFiles
-     */
+    
     public function _getAdminFiles(){
         return $this->getSingleton($this->adminFiles, "getUbiquityMyAdminFiles");
     }
@@ -247,5 +218,5 @@ class LienWebController extends ControllerBase
     
     protected function getFieldNames($model){
         return $this->_getAdminData()->getFieldNames($model);
-    }
+    }*/
 }

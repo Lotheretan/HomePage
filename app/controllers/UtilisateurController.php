@@ -17,11 +17,9 @@ class UtilisateurController extends ControllerBase
     public function index()
     {
         $semantic=$this->jquery->semantic();
-        $bt0=$semantic->htmlButton("btAccueil","Accueil");
-        $bt0->asLink("Main");
         $bts=$semantic->htmlButtonGroups("buttons",["Liste des utilisateurs","Ajouter un utilisateur..."]);
         $bts->setPropertyValues("data-ajax", ["UtilisateurController/all/","UtilisateurController/addUser/"]);
-        $bts->getOnClick("","#divUsers",["attr"=>"data-ajax"]);
+        $bts->getOnClick("","#divConfirm",["attr"=>"data-ajax"]);
         $this->jquery->compile($this->view);
         $this->loadView("Utilisateur/index.html");
     }
@@ -37,7 +35,7 @@ class UtilisateurController extends ControllerBase
 		$table->addEditButton();
 		$table->addDeleteButton();
 		$table->setUrls(["","UtilisateurController/EditUser/","UtilisateurController/DeleteUser/"]);
-		$table->setTargetSelector("#divUsers");
+		$table->setTargetSelector("#divConfirm");
 		echo $table->compile($this->jquery);
 		echo $this->jquery->compile();
 	
@@ -55,7 +53,7 @@ class UtilisateurController extends ControllerBase
 		$form->setCaptions(["Login","Mot de Passe","Fond d'écran","Couleur","Site","Status","Valider","Reset"]);
 		$form->fieldAsDropDown("site",JArray::modelArray($sites,"getId","getNom"));
 		$form->fieldAsDropDown("statut\n",JArray::modelArray($statuts,"getId","getLibelle"));
-		$form->FieldAsSubmit("submit","green","UtilisateurController/newUser/","#divUsers");
+		$form->FieldAsSubmit("submit","green","UtilisateurController/newUser/","#divConfirm");
 		$form->fieldAsReset("clear");
 		echo $form->compile($this->jquery);
 		echo $this->jquery->compile();
@@ -89,7 +87,7 @@ class UtilisateurController extends ControllerBase
 	    $form->setCaptions(["Login","Mot de Passe","Fond d'écran","Couleur","Site","Statut","Update"]);
 	    $form->fieldAsDropDown("idSite",JArray::modelArray(DAO::getAll("models\Site"),"getId","getNom"));
 	    $form->fieldAsDropDown("idStatut\n",JArray::modelArray(DAO::getAll("models\Statut"),"getId","getLibelle"));
-	    $form->fieldAsSubmit("submit","green","UtilisateurController/UpdateUser/".$id,"#divUser");
+	    $form->fieldAsSubmit("submit","green","UtilisateurController/UpdateUser/".$id,"#table-messages");
 	    echo $form->compile($this->jquery);
 	    echo $this->jquery->compile();
 	}
@@ -98,24 +96,28 @@ class UtilisateurController extends ControllerBase
 	public function UpdateUser($id)
 	{
 	    $user=DAO::getOne("models\Utilisateur", $id);
-	    $site=DAO::getOne("models\Site", $_POST["site"]);
-	    $statut=DAO::getOne("models\Statut", $_POST["statut"]);
+	    $site=DAO::getOne("models\Site", $_POST["idSite"]);
+	    $statut=DAO::getOne("models\Statut", $_POST["idStatut"]);
 	    $user->setSite($site);
 	    $user->setStatut($statut);
 	    RequestUtils::setValuesToObject($user,$_POST);
 	    if(DAO::update($user))
 	    {
-	        echo $user->getLogin()." modifié";
+	        $message=$this->showSimpleMessage($user->getLogin()." modifié","info","info");
 	    }
+	    else
+	    {
+	        $message=$this->showSimpleMessage("Impossible de modifier `".$user->getLibelle()."`", "warning","warning");
+	    }
+	    echo $message;
+	    echo $this->jquery->compile($this->view);
 	    
 	}
 	
-	public function DeleteUser($id)
-	{
-	    $user=DAO::getOne("models\Utilisateur", $id);
-	    if(DAO::remove($user))
-	    {
-	        echo $user->getLogin()." supprimé";
-	    }
+	public function DeleteUser($id){
+	    $table="Utilisateur";
+	    $controller = "UtilisateurController";
+	    $this->delete($id,$table,$controller,"DeleteUser","#table-messages");
+	    
 	}
 }

@@ -5,6 +5,7 @@ namespace controllers;
 use Ajax\semantic\html\collections\form\HtmlFormInput;
 use libraries\Auth;
 use micro\orm\DAO;
+use Ajax\service\JArray;
 
 /**
  * Controller Main
@@ -17,7 +18,7 @@ class Main extends ControllerBase
 	public function index() 
 	{
 		$semantic = $this->jquery->semantic ();
-		$semantic->htmlHeader ( "header", 1, "Accueil du site" );
+		$semantic->htmlHeader ( "header", 1, "Projet HomePage" );
 		$this->getButtons ();
 		$this->jquery->compile ( $this->view );
 		$this->loadView ( "index.html" );
@@ -34,27 +35,58 @@ public function getButtons()
 		} else 
 		{
 			if (Auth::getUser ()->getStatut () != "Utilisateur") {
+			    $btMain=$semantic->htmlButton("btAccueil","Accueil");
+			    $btMain->asLink("Main");
 				$btAdmin = $semantic->htmlButton ( "BtAdmin", "Admin" );
 				$btAdmin->asLink ( "Admin" );
 				$btUser = $semantic->htmlButton ( "btUser", "Utilisateurs" );
-				$btUser->asLink ( "UtilisateurController" );
+				$btUser->getOnClick ( "UtilisateurController/index", "#divUsers" );
 				$btSites = $semantic->htmlButton ( "btSites", "Sites" );
-				$btSites->asLink ( "SiteController" );
+				//$btSites->asLink ( "SiteController" );
+				$btSites->getOnClick ( "SiteController/index", "#divUsers" );
 				$this->favoris();
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
+				//$this->body();
 				
 			} elseif (Auth::getUser ()->getStatut () == "Utilisateur") 
 			{
+			    $btMain=$semantic->htmlButton("btAccueil","Accueil");
+			    $btMain->asLink("Main");
 				$btPara = $semantic->htmlButton("Para","Paramètres");
 				$btPara->asLink("SiteController");
 				$btDisconnect = $semantic->htmlButton( "Deconex", "Deconnexion");
 				$btDisconnect->getOnClick ( "Main/disconnect/", "#divUsers" );
 				$btFav = $semantic->htmlButtonGroups ( "BtFav", ["Favoris"] );
 				$this->favoris();
+				//$this->body();
 				
 			}
 		}
+	}
+	
+	
+	public function body()
+	{
+	    if (! isset ( $_SESSION ["user"] ))
+	    {
+	       
+	    } else
+	    {
+	        $semantic=$this->jquery->semantic();
+	        //$moteurs=DAO::getAll("models\Moteur");
+	        //$form=$semantic->dataForm("moteur", $moteurs);
+	        //$form->setFields(["moteur","search"]);
+	        //$form->fieldAsDropDown("moteurs",JArray::modelArray($moteurs,"getId","getNom"));
+	        //$moteur=DAO::getOne("models\Moteur", $form);
+	        $search=$semantic->htmlSearch("search2","Search...","search");
+	        $search->setUrl($this->url->get("/json/standardSearch/{query}"));
+	        //$form->FieldAsSubmit("Search","green","UtilisateurController/newUser/","#divUsers");
+	        echo $search->compile($this->jquery);
+	        //echo $form->compile($this->jquery);
+	        echo $this->jquery->compile();
+	    }
+	    
 	}
 	
 	public function connexion() 

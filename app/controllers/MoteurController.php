@@ -5,6 +5,9 @@ namespace controllers;
  **/
 class MoteurController extends ControllerBase{
 
-	public function index(){}
+	public function index()
+	{
+	    $this->loadView("Moteur/index.html");
+	}
 
 }

@@ -29,8 +29,6 @@ class SiteController extends ControllerBase{
             $bt2->getOnClick("SiteController/addSite","#mainSite");
             //$this->all();
         } elseif (Auth::getUser ()->getStatut () == "Utilisateur") {
-            $bt0=$semantic->htmlButton("btAccueil","Accueil");
-            $bt0->asLink("Main");
             $this->all2();
             /*$btListe=$semantic->htmlButton("BtListe","Liste des sites");
              $btListe->getOnClick("SiteController/all2/","#mainSite");*/

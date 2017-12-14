@@ -148,8 +148,14 @@ class Utilisateur{
 		$this->lienwebs=$lienwebs;
 	}
 
-	 public function __toString(){
-		return $this->id;
+	public function __toString(){
+	    return $this->login;
 	}
-
+	
+	public function __construct(){
+	    $this->site="";
+	    $this->statut="";
+	    $this->login="";
+	    $this->password="";
+	}
 }

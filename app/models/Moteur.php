@@ -81,7 +81,7 @@ class Moteur{
 	}
 
 	 public function __toString(){
-		return $this->id;
+		return $this->nom;
 	}
 
 }
